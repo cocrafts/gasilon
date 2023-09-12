@@ -1,0 +1,18 @@
+{
+  "extends": "@walless/tsconfig/application.json",
+  "include": [
+    "server.ts",
+    "api",
+		"globals.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  }
+}
