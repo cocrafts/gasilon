@@ -5,6 +5,9 @@ module.exports = {
 	env: {
 		node: true,
 	},
+	rules: {
+		'@typescript-eslint/no-explicit-any': 'off',
+	},
 	globals: {
 		window: true,
 		document: true,
