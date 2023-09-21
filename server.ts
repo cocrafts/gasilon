@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { readFile } from 'fs-extra';
 import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, sendAndConfirmTransaction, Transaction, TransactionInstruction } from '@solana/web3.js';
 
@@ -11,8 +10,8 @@ const loadKeypair = async (path: string) => {
 
 const main = async () => {
 	const connection = new Connection(clusterApiUrl('devnet'));
-	const programKeypair = await loadKeypair(join(__dirname, 'zig-out/bin/logging-keypair.json'));
-	const senderKeypair = await loadKeypair(join(__dirname, 'zig-out/bin/sender.json'));
+	const programKeypair = await loadKeypair(process.env.SOL_PROGRAM_KEYPAIR);
+	const senderKeypair = await loadKeypair(process.env.SOL_SENDER_KEYPAIR);
 	const programId: PublicKey = programKeypair.publicKey;
 
 	// const airdropRequest = await connection.requestAirdrop(senderKeypair.publicKey, LAMPORTS_PER_SOL);

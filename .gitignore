@@ -7,3 +7,5 @@ node_modules
 move/build
 zig-cache
 zig-out
+
+*keypair.json

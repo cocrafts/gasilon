@@ -3,7 +3,7 @@
   "include": [
     "server.ts",
     "api",
-		"globals.d.ts"
+		"global.d.ts"
   ],
   "exclude": [
     "node_modules"
