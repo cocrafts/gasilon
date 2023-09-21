@@ -1,17 +1,33 @@
-import express, { json } from 'express';
+import { join } from 'path';
+import { readFile } from 'fs-extra';
+import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, sendAndConfirmTransaction, Transaction, TransactionInstruction } from '@solana/web3.js';
 
-import { requestSponsorSignature } from './api/routes';
+const loadKeypair = async (path: string) => {
+	const secretKeyString = await readFile(path, { encoding: 'utf-8' });
+	const secretKey = Uint8Array.from(JSON.parse(secretKeyString));
 
-export const configure = async () => {
-	const app = express();
+	return Keypair.fromSecretKey(secretKey);
+};
 
-	app.use(json());
+const main = async () => {
+	const connection = new Connection(clusterApiUrl('devnet'));
+	const programKeypair = await loadKeypair(join(__dirname, 'zig-out/bin/logging-keypair.json'));
+	const senderKeypair = await loadKeypair(join(__dirname, 'zig-out/bin/sender.json'));
+	const programId: PublicKey = programKeypair.publicKey;
 
-	app.get('/', (_, res) => {
-		res.send('Hello World');
+	// const airdropRequest = await connection.requestAirdrop(senderKeypair.publicKey, LAMPORTS_PER_SOL);
+	// await connection.confirmTransaction(airdropRequest);
+
+	console.log('Pinging program', programId.toBase58());
+	const instruction = new TransactionInstruction({
+		keys: [{ pubkey: senderKeypair.publicKey, isSigner: false, isWritable: true }],
+		programId,
+		data: Buffer.alloc(0),
 	});
 
-	app.get('/request-sponsor-signature', requestSponsorSignature);
-
-	return app;
+	const transaction = new Transaction().add(instruction);
+	await sendAndConfirmTransaction(connection, transaction, [senderKeypair]);
+	console.log('completeted!');
 };
+
+main();
