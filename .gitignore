@@ -4,6 +4,7 @@
 
 node_modules
 
+target
 move/build
 zig-cache
 zig-out
