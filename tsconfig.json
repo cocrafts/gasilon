@@ -2,7 +2,6 @@
   "extends": "@walless/tsconfig/application.json",
   "include": [
     "server.ts",
-    "api",
 		"global.d.ts"
   ],
   "exclude": [

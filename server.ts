@@ -1,5 +1,13 @@
+import type { PublicKey } from '@solana/web3.js';
+import {
+	clusterApiUrl,
+	Connection,
+	Keypair,
+	sendAndConfirmTransaction,
+	Transaction,
+	TransactionInstruction,
+} from '@solana/web3.js';
 import { readFile } from 'fs-extra';
-import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, sendAndConfirmTransaction, Transaction, TransactionInstruction } from '@solana/web3.js';
 
 const loadKeypair = async (path: string) => {
 	const secretKeyString = await readFile(path, { encoding: 'utf-8' });
@@ -19,7 +27,9 @@ const main = async () => {
 
 	console.log('Pinging program', programId.toBase58());
 	const instruction = new TransactionInstruction({
-		keys: [{ pubkey: senderKeypair.publicKey, isSigner: false, isWritable: true }],
+		keys: [
+			{ pubkey: senderKeypair.publicKey, isSigner: false, isWritable: true },
+		],
 		programId,
 		data: Buffer.alloc(0),
 	});
