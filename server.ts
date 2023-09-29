@@ -18,8 +18,12 @@ const loadKeypair = async (path: string) => {
 
 const main = async () => {
 	const connection = new Connection(clusterApiUrl('devnet'));
-	const programKeypair = await loadKeypair(process.env.SOL_PROGRAM_KEYPAIR);
-	const senderKeypair = await loadKeypair(process.env.SOL_SENDER_KEYPAIR);
+	const programKeypair = await loadKeypair(
+		process.env.SOL_PROGRAM_KEYPAIR as string,
+	);
+	const senderKeypair = await loadKeypair(
+		process.env.SOL_SENDER_KEYPAIR as string,
+	);
 	const programId: PublicKey = programKeypair.publicKey;
 
 	// const airdropRequest = await connection.requestAirdrop(senderKeypair.publicKey, LAMPORTS_PER_SOL);
@@ -36,7 +40,7 @@ const main = async () => {
 
 	const transaction = new Transaction().add(instruction);
 	await sendAndConfirmTransaction(connection, transaction, [senderKeypair]);
-	console.log('completeted!');
+	console.log('completed!');
 };
 
 main();
