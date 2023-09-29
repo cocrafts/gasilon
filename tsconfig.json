@@ -1,17 +1,8 @@
 {
-  "extends": "@walless/tsconfig/application.json",
-  "include": [
-    "server.ts",
-		"global.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "module": "ESNext",
-    "typeRoots": [
-      "node_modules/@types"
-    ]
-  }
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "commonjs",
+        "resolveJsonModule": true,
+        "esModuleInterop": true
+    }
 }
