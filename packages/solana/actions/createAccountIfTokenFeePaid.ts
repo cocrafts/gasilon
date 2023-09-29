@@ -37,7 +37,9 @@ export async function createAccountIfTokenFeePaid(
 	sameSourceTimeout = 5000,
 ) {
 	// Prevent simple duplicate transactions using a hash of the message
-	let key = `transaction/${base58.encode(sha256(transaction.serializeMessage()))}`;
+	let key = `transaction/${base58.encode(
+		sha256(transaction.serializeMessage()),
+	)}`;
 	if (await cache.get(key)) throw new Error('duplicate transaction');
 	await cache.set(key, true);
 
@@ -51,10 +53,19 @@ export async function createAccountIfTokenFeePaid(
 	);
 
 	// Check that transaction only contains transfer and a valid new account
-	await validateAccountInitializationInstructions(connection, transaction, feePayer, cache);
+	await validateAccountInitializationInstructions(
+		connection,
+		transaction,
+		feePayer,
+		cache,
+	);
 
 	// Check that the transaction contains a valid transfer to Octane's token account
-	const transfer = await validateTransfer(connection, transaction, allowedTokens);
+	const transfer = await validateTransfer(
+		connection,
+		transaction,
+		allowedTokens,
+	);
 
 	key = `createAccount/lastSignature/${transfer.keys.source.pubkey.toBase58()}`;
 	const lastSignature: number | undefined = await cache.get(key);

@@ -1,11 +1,11 @@
-import type { PublicKey, SimulatedTransactionResponse } from '@solana/web3.js';
+import type { SimulatedTransactionResponse } from '@solana/web3.js';
 import { Connection, Transaction, VersionedTransaction } from '@solana/web3.js';
 
 // Simulate a signed, serialized transaction before broadcasting
 export async function simulateRawTransaction(
 	connection: Connection,
 	rawTransaction: Buffer,
-	includeAccounts?: boolean | Array<PublicKey>,
+	// includeAccounts?: boolean | Array<PublicKey>,
 ): Promise<SimulatedTransactionResponse> {
 	/*
        Simulating a transaction directly can cause the `signatures` property to change.
@@ -23,9 +23,11 @@ export async function simulateRawTransaction(
      */
 	const simulated = await Connection.prototype.simulateTransaction.call(
 		connection,
-		VersionedTransaction.deserialize(Transaction.from(rawTransaction).serialize()),
+		VersionedTransaction.deserialize(
+			Transaction.from(rawTransaction).serialize(),
+		),
 		undefined,
-		// includeAccounts
+		// includeAccounts,
 	);
 	if (simulated.value.err) throw new Error('Simulation error');
 

@@ -1,6 +1,9 @@
 import type { TransactionInstruction } from '@solana/web3.js';
 
-export function areInstructionsEqual(instruction1: TransactionInstruction, instruction2: TransactionInstruction) {
+export function areInstructionsEqual(
+	instruction1: TransactionInstruction,
+	instruction2: TransactionInstruction,
+) {
 	return (
 		instruction1.data.equals(instruction2.data) &&
 		instruction1.programId.equals(instruction2.programId) &&

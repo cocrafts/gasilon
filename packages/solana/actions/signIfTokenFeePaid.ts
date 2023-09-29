@@ -3,7 +3,13 @@ import base58 from 'bs58';
 import type { Cache } from 'cache-manager';
 
 import type { TokenFee } from '../core';
-import { sha256, simulateRawTransaction, validateInstructions, validateTransaction, validateTransfer } from '../core';
+import {
+	sha256,
+	simulateRawTransaction,
+	validateInstructions,
+	validateTransaction,
+	validateTransfer,
+} from '../core';
 
 /**
  * Sign transaction by fee payer if the first instruction is a transfer of token fee to given account
@@ -30,7 +36,9 @@ export async function signWithTokenFee(
 	sameSourceTimeout = 5000,
 ): Promise<{ signature: string }> {
 	// Prevent simple duplicate transactions using a hash of the message
-	let key = `transaction/${base58.encode(sha256(transaction.serializeMessage()))}`;
+	let key = `transaction/${base58.encode(
+		sha256(transaction.serializeMessage()),
+	)}`;
 	if (await cache.get(key)) throw new Error('duplicate transaction');
 	await cache.set(key, true);
 
@@ -46,7 +54,11 @@ export async function signWithTokenFee(
 	await validateInstructions(transaction, feePayer);
 
 	// Check that the transaction contains a valid transfer to Octane's token account
-	const transfer = await validateTransfer(connection, transaction, allowedTokens);
+	const transfer = await validateTransfer(
+		connection,
+		transaction,
+		allowedTokens,
+	);
 
 	/*
        An attacker could make multiple signing requests before the transaction is confirmed. If the source token account

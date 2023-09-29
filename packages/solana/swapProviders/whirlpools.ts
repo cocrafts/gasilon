@@ -20,8 +20,12 @@ import type { Connection, TransactionInstruction } from '@solana/web3.js';
 import { Keypair, PublicKey, SystemProgram } from '@solana/web3.js';
 import type BN from 'bn.js';
 
-const WHIRLPOOL_PROGRAM_ID = new PublicKey('whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc');
-const WHIRLPOOL_CONFIG_KEY = new PublicKey('2LecshUwdy9xi7meFgHtFJQNSKk4KdTrcpvaB56dP2NQ');
+const WHIRLPOOL_PROGRAM_ID = new PublicKey(
+	'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',
+);
+const WHIRLPOOL_CONFIG_KEY = new PublicKey(
+	'2LecshUwdy9xi7meFgHtFJQNSKk4KdTrcpvaB56dP2NQ',
+);
 const WHIRLPOOL_TICK_SPACING = 64;
 
 export const MESSAGE_TOKEN_KEY = 'whirlpools-swap';
@@ -29,10 +33,17 @@ export const MESSAGE_TOKEN_KEY = 'whirlpools-swap';
 export function getWhirlpoolsContext(connection: Connection): WhirlpoolContext {
 	// We use the context only for getting quotes and looking up instructions, so no need for real keypair
 	const wallet = new Wallet(Keypair.generate());
-	return WhirlpoolContext.from(connection, wallet as never, WHIRLPOOL_PROGRAM_ID);
+	return WhirlpoolContext.from(
+		connection,
+		wallet as never,
+		WHIRLPOOL_PROGRAM_ID,
+	);
 }
 
-export function getABMints(sourceMint: PublicKey, targetMint: PublicKey): [PublicKey, PublicKey] {
+export function getABMints(
+	sourceMint: PublicKey,
+	targetMint: PublicKey,
+): [PublicKey, PublicKey] {
 	const [addressA, addressB] = PoolUtil.orderMints(sourceMint, targetMint);
 	return [AddressUtil.toPubKey(addressA), AddressUtil.toPubKey(addressB)];
 }
@@ -73,9 +84,17 @@ export async function getSwapInstructions(
 	quote: SwapQuote,
 	rentExemptBalance: number,
 ): Promise<TransactionInstruction[]> {
-	const associatedSOLAddress = await getAssociatedTokenAddress(NATIVE_MINT, user);
+	const associatedSOLAddress = await getAssociatedTokenAddress(
+		NATIVE_MINT,
+		user,
+	);
 	const setupInstructions = [
-		createAssociatedTokenAccountInstruction(feePayer, associatedSOLAddress, user, NATIVE_MINT),
+		createAssociatedTokenAccountInstruction(
+			feePayer,
+			associatedSOLAddress,
+			user,
+			NATIVE_MINT,
+		),
 	];
 
 	const data = whirlpool.getData();
@@ -87,7 +106,8 @@ export async function getSwapInstructions(
 		tokenVaultA: data.tokenVaultA,
 		tokenOwnerAccountB: await getAssociatedTokenAddress(data.tokenMintB, user),
 		tokenVaultB: data.tokenVaultB,
-		oracle: PDAUtil.getOracle(WHIRLPOOL_PROGRAM_ID, whirlpool.getAddress()).publicKey,
+		oracle: PDAUtil.getOracle(WHIRLPOOL_PROGRAM_ID, whirlpool.getAddress())
+			.publicKey,
 	}).instructions;
 
 	const cleanupInstructions = [

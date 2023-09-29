@@ -45,7 +45,14 @@ export async function signGeneratedTransaction(
 	cache: Cache,
 ): Promise<{ signature: string }> {
 	// Check that we actually produced this transaction previously
-	if (!MessageToken.isValid(messageTokenKey, transaction.compileMessage(), messageToken, feePayer.publicKey)) {
+	if (
+		!MessageToken.isValid(
+			messageTokenKey,
+			transaction.compileMessage(),
+			messageToken,
+			feePayer.publicKey,
+		)
+	) {
 		throw new Error("Message token isn't valid");
 	}
 
@@ -62,8 +69,11 @@ export async function signGeneratedTransaction(
 	}
 
 	const hasFeePayerSignaturePlaceholder =
-		transaction.signatures[0].publicKey.equals(feePayer.publicKey) && transaction.signatures[0].signature === null;
-	const hasAllOtherSignatures = transaction.signatures.slice(1).every((pair) => pair.signature !== null);
+		transaction.signatures[0].publicKey.equals(feePayer.publicKey) &&
+		transaction.signatures[0].signature === null;
+	const hasAllOtherSignatures = transaction.signatures
+		.slice(1)
+		.every((pair) => pair.signature !== null);
 
 	if (!hasFeePayerSignaturePlaceholder) {
 		throw new Error("Fee payer's signature doesn't exist or already filled");

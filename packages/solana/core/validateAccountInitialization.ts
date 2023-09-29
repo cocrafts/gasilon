@@ -15,12 +15,16 @@ export async function validateAccountInitializationInstructions(
 	feePayer: Keypair,
 	cache: Cache,
 ): Promise<void> {
-	const transaction = Transaction.from(originalTransaction.serialize({ requireAllSignatures: false }));
+	const transaction = Transaction.from(
+		originalTransaction.serialize({ requireAllSignatures: false }),
+	);
 
 	// Transaction instructions should be: [fee transfer, account initialization]
 	// The fee transfer is validated with validateTransfer in the action function.
 	if (transaction.instructions.length != 2) {
-		throw new Error('transaction should contain 2 instructions: fee payment, account init');
+		throw new Error(
+			'transaction should contain 2 instructions: fee payment, account init',
+		);
 	}
 	const [, instruction] = transaction.instructions;
 
@@ -30,7 +34,10 @@ export async function validateAccountInitializationInstructions(
 
 	const [, , ownerMeta, mintMeta] = instruction.keys;
 
-	const associatedToken = await getAssociatedTokenAddress(mintMeta.pubkey, ownerMeta.pubkey);
+	const associatedToken = await getAssociatedTokenAddress(
+		mintMeta.pubkey,
+		ownerMeta.pubkey,
+	);
 
 	// Check if account isn't already created
 	if (await connection.getAccountInfo(associatedToken, 'confirmed')) {
@@ -48,7 +55,10 @@ export async function validateAccountInitializationInstructions(
 	}
 
 	// Prevent trying to create same accounts too many times within a short timeframe (per one recent blockhash)
-	const key = `account/${transaction.recentBlockhash}_${associatedToken.toString()}`;
-	if (await cache.get(key)) throw new Error('duplicate account within same recent blockhash');
+	const key = `account/${
+		transaction.recentBlockhash
+	}_${associatedToken.toString()}`;
+	if (await cache.get(key))
+		throw new Error('duplicate account within same recent blockhash');
 	await cache.set(key, true);
 }

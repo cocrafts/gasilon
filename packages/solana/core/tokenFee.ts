@@ -13,7 +13,12 @@ export class TokenFee {
 	public decimals: number;
 	public fee: bigint;
 
-	constructor(mint: PublicKey, account: PublicKey, decimals: number, fee: bigint) {
+	constructor(
+		mint: PublicKey,
+		account: PublicKey,
+		decimals: number,
+		fee: bigint,
+	) {
 		this.mint = mint;
 		this.account = account;
 		this.decimals = decimals;

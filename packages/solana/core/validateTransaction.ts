@@ -1,4 +1,9 @@
-import type { Connection, Keypair, Transaction, TransactionSignature } from '@solana/web3.js';
+import type {
+	Connection,
+	Keypair,
+	Transaction,
+	TransactionSignature,
+} from '@solana/web3.js';
 import base58 from 'bs58';
 
 // Check that a transaction is basically valid, sign it, and serialize it, verifying the signatures
@@ -12,13 +17,16 @@ export async function validateTransaction(
 	lamportsPerSignature: number,
 ): Promise<{ signature: TransactionSignature; rawTransaction: Buffer }> {
 	// Check the fee payer and blockhash for basic validity
-	if (!transaction.feePayer?.equals(feePayer.publicKey)) throw new Error('invalid fee payer');
+	if (!transaction.feePayer?.equals(feePayer.publicKey))
+		throw new Error('invalid fee payer');
 	if (!transaction.recentBlockhash) throw new Error('missing recent blockhash');
 
 	// TODO: handle nonce accounts?
 
 	// Check Octane's RPC node for the blockhash to make sure it's synced and the fee is reasonable
-	const feeCalculator = await connection.getFeeCalculatorForBlockhash(transaction.recentBlockhash);
+	const feeCalculator = await connection.getFeeCalculatorForBlockhash(
+		transaction.recentBlockhash,
+	);
 	if (!feeCalculator.value) {
 		throw new Error('blockhash not found');
 	}
@@ -35,7 +43,8 @@ export async function validateTransaction(
 	}
 
 	const [primary, ...secondary] = transaction.signatures;
-	if (!primary.publicKey.equals(feePayer.publicKey)) throw new Error('invalid fee payer pubkey');
+	if (!primary.publicKey.equals(feePayer.publicKey))
+		throw new Error('invalid fee payer pubkey');
 	if (primary.signature) throw new Error('invalid fee payer signature');
 
 	for (const signature of secondary) {

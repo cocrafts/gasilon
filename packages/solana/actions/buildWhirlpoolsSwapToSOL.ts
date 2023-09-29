@@ -6,12 +6,21 @@ import {
 	getMinimumBalanceForRentExemptAccount,
 	NATIVE_MINT,
 } from '@solana/spl-token';
-import type { Connection, Keypair, PublicKey, TransactionInstruction } from '@solana/web3.js';
+import type {
+	Connection,
+	Keypair,
+	PublicKey,
+	TransactionInstruction,
+} from '@solana/web3.js';
 import { Transaction } from '@solana/web3.js';
 import BN from 'bn.js';
 import type { Cache } from 'cache-manager';
 
-import { isMainnetBetaCluster, MessageToken, simulateRawTransaction } from '../core';
+import {
+	isMainnetBetaCluster,
+	MessageToken,
+	simulateRawTransaction,
+} from '../core';
 import { whirlpools } from '../swapProviders';
 
 export type FeeOptions = {
@@ -45,7 +54,11 @@ export async function buildWhirlpoolsSwapToSOL(
 	cache: Cache,
 	sameMintTimeout = 3000,
 	feeOptions?: FeeOptions,
-): Promise<{ transaction: Transaction; quote: SwapQuote; messageToken: string }> {
+): Promise<{
+	transaction: Transaction;
+	quote: SwapQuote;
+	messageToken: string;
+}> {
 	// Connection's genesis hash is cached to prevent an extra RPC query to the node on each call.
 	const genesisHashKey = `genesis/${connection.rpcEndpoint}`;
 	let genesisHash = await cache.get<string>(genesisHashKey);
@@ -54,7 +67,9 @@ export async function buildWhirlpoolsSwapToSOL(
 		await cache.set<string>(genesisHashKey, genesisHash);
 	}
 	if (!isMainnetBetaCluster(genesisHash)) {
-		throw new Error('Whirlpools endpoint can only run attached to the mainnet-beta cluster');
+		throw new Error(
+			'Whirlpools endpoint can only run attached to the mainnet-beta cluster',
+		);
 	}
 
 	if (amount.lte(new BN(0))) {
@@ -72,7 +87,10 @@ export async function buildWhirlpoolsSwapToSOL(
 	}
 	// cache.set() is in the end of the function
 
-	const associatedSOLAddress = await getAssociatedTokenAddress(NATIVE_MINT, user);
+	const associatedSOLAddress = await getAssociatedTokenAddress(
+		NATIVE_MINT,
+		user,
+	);
 	if (await connection.getAccountInfo(associatedSOLAddress)) {
 		throw new Error('Associated SOL account exists for user');
 	}
@@ -107,15 +125,24 @@ export async function buildWhirlpoolsSwapToSOL(
 		);
 	}
 
-	const instructions = feeTransferInstruction ? [feeTransferInstruction, ...swapInstructions] : swapInstructions;
+	const instructions = feeTransferInstruction
+		? [feeTransferInstruction, ...swapInstructions]
+		: swapInstructions;
 	const transaction = new Transaction({
 		feePayer: feePayer.publicKey,
 		...(await connection.getLatestBlockhash()),
 	}).add(...instructions);
 
-	await simulateRawTransaction(connection, transaction.serialize({ verifySignatures: false }));
+	await simulateRawTransaction(
+		connection,
+		transaction.serialize({ verifySignatures: false }),
+	);
 
-	const messageToken = new MessageToken(whirlpools.MESSAGE_TOKEN_KEY, transaction.compileMessage(), feePayer).compile();
+	const messageToken = new MessageToken(
+		whirlpools.MESSAGE_TOKEN_KEY,
+		transaction.compileMessage(),
+		feePayer,
+	).compile();
 
 	// set last signature for mint and user
 	await cache.set<number>(key, Date.now());

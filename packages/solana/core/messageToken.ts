@@ -3,7 +3,11 @@ import base58 from 'bs58';
 import nacl from 'tweetnacl';
 
 function bufferToSign(key: string, serializedMessage: Buffer): Buffer {
-	return Buffer.concat([Buffer.from('octane-message-token', 'utf-8'), Buffer.from(key), serializedMessage]);
+	return Buffer.concat([
+		Buffer.from('octane-message-token', 'utf-8'),
+		Buffer.from(key),
+		serializedMessage,
+	]);
 }
 
 /**
@@ -28,7 +32,12 @@ export class MessageToken {
 		return base58.encode(signature);
 	}
 
-	static isValid(key: string, message: Message, token: string, publicKey: PublicKey): boolean {
+	static isValid(
+		key: string,
+		message: Message,
+		token: string,
+		publicKey: PublicKey,
+	): boolean {
 		if (!token) {
 			return false;
 		}

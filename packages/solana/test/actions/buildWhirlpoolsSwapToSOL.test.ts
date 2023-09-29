@@ -1,27 +1,28 @@
 import { Percentage } from '@orca-so/common-sdk';
-import { getAccount, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import {
+	getAccount,
+	getAssociatedTokenAddress,
+	TOKEN_PROGRAM_ID,
+} from '@solana/spl-token';
 import { Connection, Keypair, PublicKey } from '@solana/web3.js';
 import BN from 'bn.js';
 import cacheManager from 'cache-manager';
-// @ts-ignore (TS7016) There is no type definition for this at DefinitelyTyped.
-import MemoryStore from 'cache-manager/lib/stores/memory';
+import { MemoryStore } from 'cache-manager/lib/stores/memory';
 import { expect } from 'chai';
-import { sign } from 'tweetnacl';
 
 import { buildWhirlpoolsSwapToSOL } from '../../actions';
 
-const connection = new Connection('https://api.mainnet-beta.solana.com/', 'confirmed');
+const connection = new Connection(
+	'https://api.mainnet-beta.solana.com/',
+	'confirmed',
+);
 
-const _keypair = sign.keyPair();
-// @ts-ignore: _keypair should be private
-const feePayerStub: Keypair = {
-	_keypair,
-	secretKey: new Keypair(_keypair).secretKey,
-	publicKey: new PublicKey('AmnCNDKh74yWiyAtA3gn6tBBdyU7qzdxYkeXhZRqMNZm'), // public key with some SOL on mainnet
-};
+const feePayerStub = Keypair.generate();
 
 const mintUSDC = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
-const userWithUSDC = new PublicKey('EmMC1F6X25qsnXVzNzKUyqFWfLF2GsVJW55fGJRm9feY'); // a keypair with 0.1 USDC
+const userWithUSDC = new PublicKey(
+	'EmMC1F6X25qsnXVzNzKUyqFWfLF2GsVJW55fGJRm9feY',
+); // a keypair with 0.1 USDC
 
 let cache: cacheManager.Cache;
 beforeEach(async () => {
@@ -41,12 +42,15 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 		);
 
 		expect(transaction.feePayer!.equals(feePayerStub.publicKey)).to.be.true;
-		expect(transaction.signatures[0].publicKey.equals(feePayerStub.publicKey)).to.be.true;
+		expect(transaction.signatures[0].publicKey.equals(feePayerStub.publicKey))
+			.to.be.true;
 		expect(transaction.signatures[0].signature).to.be.null;
 		expect(transaction.signatures[1].publicKey.equals(userWithUSDC)).to.be.true;
 		expect(transaction.signatures[1].signature).to.be.null;
 
-		await expect(quote.estimatedAmountIn.toNumber()).to.equal(new BN(50000).toNumber());
+		await expect(quote.estimatedAmountIn.toNumber()).to.equal(
+			new BN(50000).toNumber(),
+		);
 		await expect(quote.estimatedAmountOut.toNumber()).to.be.greaterThan(0);
 	});
 
@@ -120,7 +124,10 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 	});
 
 	it('rejects a transaction when connection is attached to a non-mainnet cluster', async () => {
-		const connectionDevnet = new Connection('https://api.devnet.solana.com/', 'confirmed');
+		const connectionDevnet = new Connection(
+			'https://api.devnet.solana.com/',
+			'confirmed',
+		);
 		await expect(
 			buildWhirlpoolsSwapToSOL(
 				connectionDevnet,
@@ -131,12 +138,14 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 				Percentage.fromFraction(1, 1000),
 				cache,
 			),
-		).to.be.rejectedWith('Whirlpools endpoint can only run attached to the mainnet-beta cluster');
+		).to.be.rejectedWith(
+			'Whirlpools endpoint can only run attached to the mainnet-beta cluster',
+		);
 
 		// Check that cache was updated:
-		expect(await cache.get<string>(`genesis/${connectionDevnet.rpcEndpoint}`)).to.equal(
-			await connectionDevnet.getGenesisHash(),
-		);
+		expect(
+			await cache.get<string>(`genesis/${connectionDevnet.rpcEndpoint}`),
+		).to.equal(await connectionDevnet.getGenesisHash());
 
 		// Check that cache is scoped locally to the connection. The query with original connection shouldn't fail:
 		await buildWhirlpoolsSwapToSOL(
@@ -161,8 +170,13 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 				Percentage.fromFraction(1, 1000),
 				cache,
 			),
-		).to.be.rejectedWith('Whirlpools endpoint can only run attached to the mainnet-beta cluster');
-		await cache.set(`genesis/${connectionDevnet.rpcEndpoint}`, await connection.getGenesisHash());
+		).to.be.rejectedWith(
+			'Whirlpools endpoint can only run attached to the mainnet-beta cluster',
+		);
+		await cache.set(
+			`genesis/${connectionDevnet.rpcEndpoint}`,
+			await connection.getGenesisHash(),
+		);
 		await expect(
 			buildWhirlpoolsSwapToSOL(
 				connectionDevnet,
@@ -189,35 +203,51 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 			3000,
 			{
 				amount: 5,
-				destinationAccount: await getAssociatedTokenAddress(mintUSDC, feePayerStub.publicKey),
+				destinationAccount: await getAssociatedTokenAddress(
+					mintUSDC,
+					feePayerStub.publicKey,
+				),
 				sourceAccount: await getAssociatedTokenAddress(mintUSDC, userWithUSDC),
 			},
 		);
 
 		expect(transaction.feePayer!.equals(feePayerStub.publicKey)).to.be.true;
 
-		expect(transaction.signatures[0].publicKey.equals(feePayerStub.publicKey)).to.be.true;
+		expect(transaction.signatures[0].publicKey.equals(feePayerStub.publicKey))
+			.to.be.true;
 		expect(transaction.signatures[0].signature).to.be.null;
 		expect(transaction.signatures[1].publicKey.equals(userWithUSDC)).to.be.true;
 		expect(transaction.signatures[1].signature).to.be.null;
 
-		expect(transaction.instructions[0].programId.equals(TOKEN_PROGRAM_ID)).to.be.true;
-		expect(transaction.instructions[0].keys[0].pubkey.equals(await getAssociatedTokenAddress(mintUSDC, userWithUSDC)))
-			.to.be.true;
+		expect(transaction.instructions[0].programId.equals(TOKEN_PROGRAM_ID)).to.be
+			.true;
+		expect(
+			transaction.instructions[0].keys[0].pubkey.equals(
+				await getAssociatedTokenAddress(mintUSDC, userWithUSDC),
+			),
+		).to.be.true;
 		expect(
 			transaction.instructions[0].keys[1].pubkey.equals(
 				await getAssociatedTokenAddress(mintUSDC, feePayerStub.publicKey),
 			),
 		).to.be.true;
 
-		await expect(quote.estimatedAmountIn.toNumber()).to.equal(new BN(50000).toNumber());
+		await expect(quote.estimatedAmountIn.toNumber()).to.equal(
+			new BN(50000).toNumber(),
+		);
 		await expect(quote.estimatedAmountOut.toNumber()).to.be.greaterThan(0);
-		await expect(transaction.feePayer!.equals(feePayerStub.publicKey)).to.be.true;
+		await expect(transaction.feePayer!.equals(feePayerStub.publicKey)).to.be
+			.true;
 	});
 
 	it('rejects when fee and swap amount exceed balance', async () => {
 		const balance = new BN(
-			(await getAccount(connection, await getAssociatedTokenAddress(mintUSDC, userWithUSDC))).amount.toString(),
+			(
+				await getAccount(
+					connection,
+					await getAssociatedTokenAddress(mintUSDC, userWithUSDC),
+				)
+			).amount.toString(),
 		);
 
 		await buildWhirlpoolsSwapToSOL(
@@ -243,8 +273,14 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 				0,
 				{
 					amount: 5,
-					destinationAccount: await getAssociatedTokenAddress(mintUSDC, feePayerStub.publicKey),
-					sourceAccount: await getAssociatedTokenAddress(mintUSDC, userWithUSDC),
+					destinationAccount: await getAssociatedTokenAddress(
+						mintUSDC,
+						feePayerStub.publicKey,
+					),
+					sourceAccount: await getAssociatedTokenAddress(
+						mintUSDC,
+						userWithUSDC,
+					),
 				},
 			),
 		).to.be.rejectedWith('Simulation error');
@@ -264,8 +300,14 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 				0,
 				{
 					amount: 5,
-					destinationAccount: await getAssociatedTokenAddress(mint, feePayerStub.publicKey),
-					sourceAccount: await getAssociatedTokenAddress(mintUSDC, userWithUSDC),
+					destinationAccount: await getAssociatedTokenAddress(
+						mint,
+						feePayerStub.publicKey,
+					),
+					sourceAccount: await getAssociatedTokenAddress(
+						mintUSDC,
+						userWithUSDC,
+					),
 				},
 			),
 		).to.be.rejectedWith('Simulation error');
@@ -285,8 +327,14 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 				0,
 				{
 					amount: 5,
-					destinationAccount: await getAssociatedTokenAddress(mintUSDC, feePayerStub.publicKey),
-					sourceAccount: await getAssociatedTokenAddress(mintUSDC, userWithUSDC),
+					destinationAccount: await getAssociatedTokenAddress(
+						mintUSDC,
+						feePayerStub.publicKey,
+					),
+					sourceAccount: await getAssociatedTokenAddress(
+						mintUSDC,
+						userWithUSDC,
+					),
 				},
 			),
 		).to.be.rejectedWith('Associated SOL account exists for user');
@@ -295,7 +343,7 @@ describe('buildWhirlpoolsSwapToSOL action', async () => {
 	// todo: validate transaction simulation results
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function beforeEach(arg0: () => Promise<void>) {
 	throw new Error('Function not implemented.');
 }
-

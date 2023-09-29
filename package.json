@@ -1,23 +1,30 @@
 {
-  "name": "zol",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@solana/web3.js": "^1.78.5",
-    "bigint-buffer": "^1.1.5"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.2",
-    "@walless/eslint-config": "^0.0.5",
-    "@walless/tsconfig": "^0.0.1",
-    "fs-extra": "^11.1.1",
-    "typescript": "^5.2.2"
-  }
+    "name": "gasilon",
+    "workspaces": [
+        "packages/*"
+    ],
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint --fix --ext .js,.ts .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@solana/web3.js": "^1.78.5",
+        "bigint-buffer": "^1.1.5",
+        "sst": "^2.26.8",
+        "aws-cdk-lib": "2.95.1",
+        "constructs": "10.2.69"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.2",
+        "@walless/eslint-config": "^0.0.5",
+        "@walless/tsconfig": "^0.0.1",
+        "fs-extra": "^11.1.1",
+        "typescript": "^5.2.2"
+    }
 }
