@@ -15,6 +15,7 @@ export default {
 		app.stack(({ stack }) => {
 			const API = new Api(stack, 'api', {
 				routes: {
+					'GET /gasilon': 'functions/solGasilon',
 					'GET /gasilon/solana': 'functions/solGasilon',
 					'GET /gasilon/solana/{proxy+}': 'functions/solGasilon',
 				},

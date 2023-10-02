@@ -3,9 +3,8 @@ import { sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js';
 import base58 from 'bs58';
 import type { Request, Response } from 'express';
 
-import config from '../config.json';
-
-import { cache, connection, ENV_SECRET_KEYPAIR } from './config';
+import config from '../../../../config.json';
+import { cache, connection, ENV_SECRET_KEYPAIR } from '../config';
 
 export const handleTransfer = async (req: Request, res: Response) => {
 	const serialized = req.body?.transaction;

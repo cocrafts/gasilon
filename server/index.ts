@@ -1,19 +1,15 @@
+import path from 'path';
+
 import dotenv from 'dotenv';
-import express from 'express';
 
-import { handleGetConfig } from './src/getConfig';
-import { handleTransfer } from './src/transfer';
+dotenv.config({
+	path: path.resolve(__dirname, '../.env'),
+});
 
-dotenv.config();
+import app from '@gasilon/app';
 
-const app = express();
-app.use(express.json());
+const port = process.env.port || 8080;
 
-app.get('/api/gasilon', handleGetConfig);
-
-app.get('/api/gasilon/solana/transfer', handleTransfer);
-
-const port = process.env.PORT || 8080;
 app.listen(port, () => {
-	console.log(`Listening on port ${port}...`);
+	console.log('Gasilon server is running at port ', port);
 });
