@@ -1,7 +1,7 @@
 {
     "name": "@gasilon/solana",
     "version": "0.0.1",
-    "main": "index.js",
+    "main": "index.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
