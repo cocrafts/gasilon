@@ -64,7 +64,7 @@ export async function buildWhirlpoolsSwapToSOL(
 	let genesisHash = await cache.get<string>(genesisHashKey);
 	if (!genesisHash) {
 		genesisHash = await connection.getGenesisHash();
-		await cache.set<string>(genesisHashKey, genesisHash);
+		await cache.set(genesisHashKey, genesisHash);
 	}
 	if (!isMainnetBetaCluster(genesisHash)) {
 		throw new Error(
@@ -145,7 +145,7 @@ export async function buildWhirlpoolsSwapToSOL(
 	).compile();
 
 	// set last signature for mint and user
-	await cache.set<number>(key, Date.now());
+	await cache.set(key, Date.now());
 
 	return { transaction, quote, messageToken };
 }
