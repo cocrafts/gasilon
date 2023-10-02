@@ -1,0 +1,38 @@
+{
+    "rpcUrl": "https://api.devnet.solana.com",
+    "maxSignatures": 2,
+    "lamportsPerSignature": 5000,
+    "corsOrigin": true,
+    "endpoints": {
+        "transfer": {
+            "tokens": [
+                {
+                    "mint": "7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz",
+                    "account": "CmPGCoenVSenMDBtPyyrNwPhn657kovipQdJYdHQFEH",
+                    "decimals": 9,
+                    "fee": 10000000
+                }
+            ]
+        },
+        "createAssociatedTokenAccount": {
+            "tokens": [
+                {
+                    "mint": "7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz",
+                    "account": "CmPGCoenVSenMDBtPyyrNwPhn657kovipQdJYdHQFEH",
+                    "decimals": 9,
+                    "fee": 10000000
+                }
+            ]
+        },
+        "whirlpoolsSwap": {
+            "tokens": [
+                {
+                    "mint": "7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz",
+                    "account": "CmPGCoenVSenMDBtPyyrNwPhn657kovipQdJYdHQFEH",
+                    "decimals": 9,
+                    "fee": 10000000
+                }
+            ]
+        }
+    }
+}
