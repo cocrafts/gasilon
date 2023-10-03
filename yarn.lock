@@ -1884,14 +1884,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gasilon/app@workspace:packages/app":
+"@gasilon/app@*, @gasilon/app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "@gasilon/app@workspace:packages/app"
   dependencies:
     "@solana/web3.js": ^1.78.5
     "@types/express": ^4.17.18
     bs58: ^5.0.0
-    bun-types: latest
     cache-manager: ^5.2.3
     express: ^4.18.2
     redis: ^4.6.10
@@ -1909,6 +1908,8 @@ __metadata:
     axios: ^1.5.0
     bs58: ^5.0.0
     dotenv: ^16.3.1
+  peerDependencies:
+    typescript: ^5.0.0
   languageName: unknown
   linkType: soft
 
@@ -1916,6 +1917,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@gasilon/lambda@workspace:lambda"
   dependencies:
+    "@gasilon/app": "*"
     "@types/aws-lambda": ^8.10.122
     "@vendia/serverless-express": ^4.10.4
     aws-lambda: ^1.0.7
@@ -1925,6 +1927,11 @@ __metadata:
 "@gasilon/server@workspace:server":
   version: 0.0.0-use.local
   resolution: "@gasilon/server@workspace:server"
+  dependencies:
+    "@gasilon/app": "*"
+    dotenv: ^16.3.1
+  peerDependencies:
+    typescript: ^5.0.0
   languageName: unknown
   linkType: soft
 
@@ -1953,6 +1960,8 @@ __metadata:
     shx: ^0.3.3
     start-server-and-test: ^1.14.0
     tweetnacl: ^1.0.3
+  peerDependencies:
+    typescript: ^5.0.0
   languageName: unknown
   linkType: soft
 
@@ -4557,13 +4566,6 @@ __metadata:
   version: 3.2.0
   resolution: "builtin-modules@npm:3.2.0"
   checksum: 0265aa1ba78e1a16f4e18668d815cb43fb364e6a6b8aa9189c6f44c7b894a551a43b323c40206959d2d4b2568c1f2805607ad6c88adc306a776ce6904cca6715
-  languageName: node
-  linkType: hard
-
-"bun-types@npm:latest":
-  version: 1.0.3
-  resolution: "bun-types@npm:1.0.3"
-  checksum: 3631a5c0aad2461d019faa2e216dd71d48b2fc6cb714553f5f7b14fcf1d138a8f2aeff4b4df538f622ae924565ef9f264cc1229f9a1c98dcc51f06b136a0bc8a
   languageName: node
   linkType: hard
 
