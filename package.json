@@ -3,30 +3,31 @@
     "workspaces": [
         "packages/*",
         "server",
-        "client"
+        "client",
+        "lambda"
     ],
     "private": true,
     "version": "0.0.1",
     "description": "",
     "scripts": {
         "lint": "eslint --fix --ext .js,.ts .",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "sst dev",
+        "build": "sst build",
+        "deploy": "sst deploy"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@solana/web3.js": "^1.78.5",
-        "bigint-buffer": "^1.1.5",
-        "sst": "^2.26.8",
         "aws-cdk-lib": "2.95.1",
-        "constructs": "10.2.69"
+        "constructs": "10.2.69",
+        "sst": "^2.26.8",
+        "typescript": "^5.2.2"
     },
     "devDependencies": {
-        "@types/fs-extra": "^11.0.2",
         "@walless/eslint-config": "^0.0.5",
-        "@walless/tsconfig": "^0.0.1",
-        "fs-extra": "^11.1.1",
-        "typescript": "^5.2.2"
-    }
+        "@walless/tsconfig": "^0.0.1"
+    },
+    "packageManager": "yarn@3.6.3"
 }
