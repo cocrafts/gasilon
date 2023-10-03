@@ -9,7 +9,6 @@ import {
 	WhirlpoolContext,
 	WhirlpoolIx,
 } from '@orca-so/whirlpools-sdk';
-import { Wallet } from '@project-serum/anchor';
 import {
 	createAssociatedTokenAccountInstruction,
 	createCloseAccountInstruction,
@@ -32,7 +31,7 @@ export const MESSAGE_TOKEN_KEY = 'whirlpools-swap';
 
 export function getWhirlpoolsContext(connection: Connection): WhirlpoolContext {
 	// We use the context only for getting quotes and looking up instructions, so no need for real keypair
-	const wallet = new Wallet(Keypair.generate());
+	const wallet = Keypair.generate();
 	return WhirlpoolContext.from(
 		connection,
 		wallet as never,
