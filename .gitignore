@@ -13,3 +13,7 @@ zig-out
 
 .vscode
 **/.env
+
+**/build
+
+.sst
