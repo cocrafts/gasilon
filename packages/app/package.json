@@ -1,9 +1,7 @@
 {
     "name": "@gasilon/app",
+    "version": "0.0.1",
     "main": "src/index.ts",
-    "devDependencies": {
-        "bun-types": "latest"
-    },
     "peerDependencies": {
         "typescript": "^5.0.0"
     },
