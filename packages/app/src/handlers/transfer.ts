@@ -1,4 +1,4 @@
-import { core, signWithTokenFee } from '@gasilon/solana';
+import { signWithTokenFee, TokenFee } from '@gasilon/solana';
 import { sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js';
 import base58 from 'bs58';
 import type { Request, Response } from 'express';
@@ -33,7 +33,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 			config.maxSignatures,
 			config.lamportsPerSignature,
 			config.endpoints.transfer.tokens.map((token) =>
-				core.TokenFee.fromSerializable(token),
+				TokenFee.fromSerializable(token),
 			),
 			await cache,
 		);

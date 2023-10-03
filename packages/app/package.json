@@ -6,6 +6,7 @@
         "typescript": "^5.0.0"
     },
     "dependencies": {
+        "@gasilon/solana": "*",
         "@solana/web3.js": "^1.78.5",
         "@types/express": "^4.17.18",
         "bs58": "^5.0.0",
