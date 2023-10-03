@@ -25,8 +25,8 @@ export default {
 
 			const API = new Api(stack, 'api', {
 				routes: {
-					'GET /gasilon': gasilon,
-					'GET /gasilon/{proxy+}': gasilon,
+					'GET /api/gasilon': gasilon,
+					'GET /api/gasilon/{proxy+}': gasilon,
 				},
 			});
 

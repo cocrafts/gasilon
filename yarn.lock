@@ -1888,6 +1888,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@gasilon/app@workspace:packages/app"
   dependencies:
+    "@gasilon/solana": "*"
     "@solana/web3.js": ^1.78.5
     "@types/express": ^4.17.18
     bs58: ^5.0.0
@@ -1935,7 +1936,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@gasilon/solana@workspace:packages/solana":
+"@gasilon/solana@*, @gasilon/solana@workspace:packages/solana":
   version: 0.0.0-use.local
   resolution: "@gasilon/solana@workspace:packages/solana"
   dependencies:
