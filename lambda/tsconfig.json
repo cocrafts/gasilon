@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "CommonJS",
+        "esModuleInterop": true,
+        "resolveJsonModule": true
+    }
+}
+
+// {
+//     "exclude": ["node_modules", "../**/*.test.ts"],
+//     "include": [".", "../packages/app", "../packages/solana", "../config.json"],
+//     "compilerOptions": {
+//         "strict": true,
+//         "target": "es2022",
+//         "module": "CommonJS",
+//         "esModuleInterop": true,
+//         "resolveJsonModule": true,
+//         "outDir": "./build",
+//         "isolatedModules": true,
+//         "paths": {
+//             "@gasilon/app": ["../packages/app"],
+//             "@gasilon/solana": ["../packages/solana"]
+//         }
+//     }
+// }

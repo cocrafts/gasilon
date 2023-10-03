@@ -4,8 +4,14 @@
     "description": "Gasilon lambda",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc"
     },
     "author": "Tan Le",
-    "license": "ISC"
+    "license": "ISC",
+    "dependencies": {
+        "@types/aws-lambda": "^8.10.122",
+        "@vendia/serverless-express": "^4.10.4",
+        "aws-lambda": "^1.0.7"
+    }
 }

@@ -8,8 +8,5 @@
         "dev": "ts-node index.ts"
     },
     "author": "Tan Le",
-    "license": "ISC",
-    "dependencies": {
-        "@gasilon/app": "*"
-    }
+    "license": "ISC"
 }

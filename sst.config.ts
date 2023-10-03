@@ -1,5 +1,5 @@
 import type { SSTConfig } from 'sst';
-import { Api } from 'sst/constructs';
+import { Api, Function } from 'sst/constructs';
 
 export default {
 	config() {
@@ -12,12 +12,21 @@ export default {
 		app.setDefaultFunctionProps({
 			runtime: 'nodejs18.x',
 		});
+
 		app.stack(({ stack }) => {
+			const gasilon = new Function(stack, "gasilon", {
+				handler: "lambda/index.handler",
+				copyFiles: [{from: "./config.json"}],
+				environment: {
+					ENVIRONMENT: process.env.ENVIRONMENT,
+					SOLANA_SECRET_KEY: process.env.SOLANA_SECRET_KEY
+				}
+			})
+
 			const API = new Api(stack, 'api', {
 				routes: {
-					'GET /gasilon': 'functions/solGasilon',
-					'GET /gasilon/solana': 'functions/solGasilon',
-					'GET /gasilon/solana/{proxy+}': 'functions/solGasilon',
+					'GET /gasilon': gasilon,
+					'GET /gasilon/{proxy+}': gasilon,
 				},
 			});
 

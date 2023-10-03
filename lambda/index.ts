@@ -1,8 +1,5 @@
-import { ApiHandler } from 'sst/node/api';
+console.log(process.env, "<---------")
+import { app } from '@gasilon/app';
+import serverlessExpress from '@vendia/serverless-express';
 
-export const handler = ApiHandler(async (evt) => {
-	return {
-		statusCode: 200,
-		body: evt.requestContext.time,
-	};
-});
+export const handler = serverlessExpress({ app });
