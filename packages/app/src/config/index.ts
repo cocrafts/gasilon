@@ -10,7 +10,7 @@ export const connection = new Connection(
 );
 
 export const ENV_SECRET_KEYPAIR = Keypair.fromSecretKey(
-	base58.decode(process.env.SOLANA_SECRET_KEY || ''),
+	base58.decode(process.env.SOLANA_SECRET_KEY as string),
 );
 
 export const cache = cacheManager.caching('memory', {
