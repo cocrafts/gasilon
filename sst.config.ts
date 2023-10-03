@@ -25,6 +25,11 @@ export default {
 			});
 
 			const API = new Api(stack, 'api', {
+				cors: {
+					allowOrigins: ['*'],
+					allowHeaders: ['Content-Type'],
+					allowMethods: ['GET', 'POST'],
+				},
 				routes: {
 					'GET /api/gasilon': gasilon,
 					'GET /api/gasilon/{proxy+}': gasilon,
