@@ -85,7 +85,7 @@ async function main() {
 			ata,
 			receiverAta,
 			keypair.publicKey,
-			100 * 10 ** 9,
+			0.001 * 10 ** 9,
 		),
 	);
 
@@ -111,10 +111,11 @@ async function main() {
 				transaction: txStr,
 			},
 		});
-		console.log(result.data, '<--- success');
+		console.log(result.data, '<-- success');
 	} catch (error) {
 		// console.log(error.request.body, '<-- request');
-		console.log(error.response.data, '<--- fail');
+		console.log(error.response, '<-- fail');
 	}
 }
+
 main();
