@@ -106,10 +106,8 @@ async function main() {
 
 	try {
 		// Call API
-		const result = await axios.get('/solana/transfer', {
-			data: {
-				transaction: txStr,
-			},
+		const result = await axios.post('/solana/transfer', {
+			transaction: txStr,
 		});
 		console.log(result.data, '<-- success');
 	} catch (error) {

@@ -11,7 +11,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 	if (typeof serialized !== 'string') {
 		res
 			.status(400)
-			.send({ status: 'error', message: 'request should contain transaction' });
+			.json({ status: 'error', message: 'request should contain transaction' });
 		return;
 	}
 
@@ -39,7 +39,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 		);
 
 		if ((config as any).returnSignature !== undefined) {
-			res.status(200).send({ status: 'ok', signature });
+			res.status(200).json({ status: 'ok', signature });
 			return;
 		}
 
@@ -53,12 +53,12 @@ export const handleTransfer = async (req: Request, res: Response) => {
 		});
 
 		// Respond with the confirmed transaction signature
-		res.status(200).send({ status: 'ok', signature });
+		res.status(200).json({ status: 'ok', signature });
 	} catch (error) {
 		let message = '';
 		if (error instanceof Error) {
 			message = error.message;
 		}
-		res.status(400).send({ status: 'error', message });
+		res.status(400).json({ status: 'error', message });
 	}
 };

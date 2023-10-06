@@ -8,10 +8,14 @@
     "dependencies": {
         "@gasilon/solana": "*",
         "@solana/web3.js": "^1.78.5",
-        "@types/express": "^4.17.18",
         "bs58": "^5.0.0",
         "cache-manager": "^5.2.3",
+        "cors": "^2.8.5",
         "express": "^4.18.2",
         "redis": "^4.6.10"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.14",
+        "@types/express": "^4.17.18"
     }
 }
