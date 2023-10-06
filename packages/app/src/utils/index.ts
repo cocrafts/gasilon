@@ -9,6 +9,10 @@ export const connection = new Connection(
 	'confirmed',
 );
 
+if (!process.env.SOLANA_SECRET_KEY) {
+	console.log('required init private key');
+}
+
 export const ENV_SECRET_KEYPAIR = Keypair.fromSecretKey(
 	base58.decode(process.env.SOLANA_SECRET_KEY as string),
 );
@@ -17,3 +21,5 @@ export const cache = cacheManager.caching('memory', {
 	max: 1000,
 	ttl: 120 /*seconds*/,
 });
+
+export * from './redis';

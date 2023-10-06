@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import config from '../../../../config.json';
-import { ENV_SECRET_KEYPAIR } from '../config';
+import { ENV_SECRET_KEYPAIR } from '../utils';
 
 export const handleGetConfig = async (req: Request, res: Response) => {
 	res.status(200).json({
