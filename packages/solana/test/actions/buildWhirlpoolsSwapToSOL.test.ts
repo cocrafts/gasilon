@@ -7,10 +7,9 @@ import {
 import { Connection, Keypair, PublicKey } from '@solana/web3.js';
 import BN from 'bn.js';
 import cacheManager from 'cache-manager';
-import { MemoryStore } from 'cache-manager/lib/stores/memory';
 import { expect } from 'chai';
 
-import { buildWhirlpoolsSwapToSOL } from '../../actions';
+import { buildWhirlpoolsSwapToSOL } from '../../actions/buildWhirlpoolsSwapToSOL';
 
 const connection = new Connection(
 	'https://api.mainnet-beta.solana.com/',
@@ -26,7 +25,10 @@ const userWithUSDC = new PublicKey(
 
 let cache: cacheManager.Cache;
 beforeEach(async () => {
-	cache = cacheManager.caching({ store: MemoryStore, max: 1000, ttl: 120 });
+	cache = await cacheManager.caching('memory', {
+		max: 1000,
+		ttl: 120,
+	});
 });
 
 describe('buildWhirlpoolsSwapToSOL action', async () => {

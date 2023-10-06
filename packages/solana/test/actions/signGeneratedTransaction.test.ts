@@ -7,12 +7,10 @@ import {
 } from '@solana/web3.js';
 import base58 from 'bs58';
 import cacheManager from 'cache-manager';
-// @ts-ignore (TS7016) There is no type definition for this at DefinitelyTyped.
-import MemoryStore from 'cache-manager/lib/stores/memory';
 import { expect } from 'chai';
 
-import { signGeneratedTransaction } from '../../src';
-import { MessageToken } from '../../src/core';
+import { signGeneratedTransaction } from '../../actions/signGeneratedTransaction';
+import { MessageToken } from '../../core';
 import { airdropLamports } from '../common';
 
 const connection = new Connection('http://localhost:8899/', 'confirmed');
@@ -25,7 +23,10 @@ before(async () => {
 let cache: cacheManager.Cache;
 let user: Keypair;
 beforeEach(async () => {
-	cache = cacheManager.caching({ store: MemoryStore, max: 1000, ttl: 120 });
+	cache = await cacheManager.caching('memory', {
+		max: 1000,
+		ttl: 120,
+	});
 	user = Keypair.generate();
 	await airdropLamports(connection, user.publicKey);
 });
@@ -64,7 +65,10 @@ if (process.env.TEST_LIVE) {
 				messageToken,
 				cache,
 			);
-			transaction.addSignature(feePayer.publicKey, base58.decode(signature));
+			transaction.addSignature(
+				feePayer.publicKey,
+				Buffer.from(base58.decode(signature)),
+			);
 			expect(transaction.signatures[0].signature).to.not.be.null;
 			transaction.serialize();
 			await sendAndConfirmRawTransaction(connection, transaction.serialize(), {

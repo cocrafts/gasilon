@@ -18,12 +18,10 @@ import {
 } from '@solana/web3.js';
 import base58 from 'bs58';
 import cacheManager from 'cache-manager';
-// @ts-ignore (TS7016) There is no type definition for this at DefinitelyTyped.
-import MemoryStore from 'cache-manager/lib/stores/memory';
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import { createAccountIfTokenFeePaid } from '../..';
+import { createAccountIfTokenFeePaid } from '../../actions/createAccountIfTokenFeePaid';
 import { TokenFee } from '../../core';
 import { airdropLamports } from '../common';
 
@@ -39,7 +37,10 @@ if (process.env.TEST_LIVE) {
 		let baseAllowedTokens: TokenFee[];
 		let cache: cacheManager.Cache;
 		before(async () => {
-			cache = cacheManager.caching({ store: MemoryStore, max: 1000, ttl: 120 });
+			cache = await cacheManager.caching('memory', {
+				max: 1000,
+				ttl: 120,
+			});
 			connection = new Connection('http://localhost:8899/', 'confirmed');
 			feePayerKeypair = Keypair.generate();
 			tokenKeypair = Keypair.generate();
@@ -138,7 +139,7 @@ if (process.env.TEST_LIVE) {
 			expect(signature).to.not.be.empty;
 			accountTransaction.addSignature(
 				feePayerKeypair.publicKey,
-				base58.decode(signature),
+				Buffer.from(base58.decode(signature)),
 			);
 			await sendAndConfirmRawTransaction(
 				connection,
