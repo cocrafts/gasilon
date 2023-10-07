@@ -13,6 +13,12 @@
                     "decimals": 9
                 },
                 {
+                    "name": "USDC-Dev",
+                    "mint": "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
+                    "account": "9D19sD9oFVEENov5RocywZXPnwn8ZPMmjUqvQvm3dF2o",
+                    "decimals": 6
+                },
+                {
                     "name": "USDC",
                     "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                     "account": "DrPTuaz34kdbehSJgBeS3KLwDPpEY7ScrGMQHHByevZJ",
