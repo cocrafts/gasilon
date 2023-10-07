@@ -32,7 +32,7 @@ console.log(process.env.GASILON_ENDPOINT, '<-- api endpoint');
 async function main() {
 	// Prepare user's keypair - available in wallet
 	const keypair = Keypair.fromSecretKey(base58.decode(privateKeyStr));
-	console.log(keypair, '<-- keypair');
+	console.log(keypair.publicKey.toString(), '<-- public key of user');
 	const ata = getAssociatedTokenAddressSync(
 		new PublicKey('7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz'),
 		keypair.publicKey,
@@ -56,36 +56,39 @@ async function main() {
 	const octaneConfig = (await axios.get('/')).data;
 
 	const feePayer = new PublicKey(octaneConfig.feePayer);
-	const feePayerAta = getAssociatedTokenAddressSync(
+	const feePayerGasAta = getAssociatedTokenAddressSync(
 		new PublicKey('7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz'),
 		feePayer,
-	);
-
-	const receiver = new PublicKey(
-		'EiPNEETabLepjopeJQWtqM154FSwCosHk6nt9zDEhCtk',
-	);
-	const receiverAta = getAssociatedTokenAddressSync(
-		new PublicKey('7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz'),
-		receiver,
 	);
 
 	// the first instruction must send some supported token as gas fee for feePayer
 	transaction.add(
 		createTransferInstruction(
 			ata,
-			feePayerAta,
+			feePayerGasAta,
 			keypair.publicKey,
 			0.01 * 10 ** 9, // hard code required 0.01 Token as gas fee (decimals is 9)
 		),
 	);
 
+	const receiver = new PublicKey(
+		'EiPNEETabLepjopeJQWtqM154FSwCosHk6nt9zDEhCtk',
+	);
+
+	const USDCDev = new PublicKey('Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr');
+	const receiverUSDCAta = getAssociatedTokenAddressSync(USDCDev, receiver);
+	const sourceUSDCAta = getAssociatedTokenAddressSync(
+		USDCDev,
+		keypair.publicKey,
+	);
+
 	// Any instructions following
 	transaction.add(
 		createTransferInstruction(
-			ata,
-			receiverAta,
+			sourceUSDCAta,
+			receiverUSDCAta,
 			keypair.publicKey,
-			0.001 * 10 ** 9,
+			1 * 10 ** 6,
 		),
 	);
 
