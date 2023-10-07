@@ -1,8 +1,27 @@
+import { setExchangeFunction } from '@gasilon/solana';
 import cors from 'cors';
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 
 import { handleGetConfig, handleTransfer } from './handlers';
+import { getExchangeRate } from './utils';
+
+setExchangeFunction(async (from, to) => {
+	let rate: number;
+	if (
+		process.env.ENVIRONMENT &&
+		from === 'So11111111111111111111111111111111111111112' &&
+		to === '7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz'
+	) {
+		const EXAMPLE_RATE = 15.6;
+		rate = EXAMPLE_RATE;
+	} else {
+		rate = await getExchangeRate({ network: 'solana', from, to });
+	}
+	console.log(`Exchange rate from ${from} to ${to}: ${rate}`);
+
+	return rate;
+});
 
 export const app = express();
 app.use(cors());

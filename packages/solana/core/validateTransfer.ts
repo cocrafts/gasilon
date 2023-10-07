@@ -41,6 +41,7 @@ export async function validateTransfer(
 	const account = await getAccount(connection, source.pubkey, 'confirmed');
 	if (!account.owner.equals(owner.pubkey))
 		throw new Error('source invalid owner');
+
 	if (account.isFrozen) throw new Error('source frozen');
 	if (account.amount < amount) throw new Error('source insufficient balance');
 
@@ -49,7 +50,10 @@ export async function validateTransfer(
 	if (!token) throw new Error('invalid token');
 
 	// Check that the instruction is going to pay the fee
-	if (amount < token.fee) throw new Error('invalid amount');
+	const estimatedFee = await transaction.getEstimatedFee(connection);
+	const fee = await token.getAmountTokenFee(estimatedFee);
+	console.log(estimatedFee, fee, '<-- fee');
+	if (amount < fee * 0.9) throw new Error('invalid amount');
 
 	// Check that the instruction has a valid source account
 	if (!source.isWritable) throw new Error('source not writable');
