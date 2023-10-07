@@ -109,13 +109,13 @@ async function main() {
 
 	try {
 		// Call API
-		const result = await axios.post('/solana/transfer', {
+		const result = await axios.post('/solana/transferV2', {
 			transaction: txStr,
 		});
 		console.log(result.data, '<-- success');
 	} catch (error) {
 		// console.log(error.request.body, '<-- request');
-		console.log(error.response, '<-- fail');
+		console.log(error.response.data.message, '<-- fail');
 	}
 }
 
