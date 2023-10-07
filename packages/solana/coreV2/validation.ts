@@ -35,7 +35,7 @@ export async function validateInstructions(
 	allowedTokens: TokenFee[],
 	feePayer: Keypair,
 ) {
-	let feePaid = BigInt(0);
+	let feePaid = 0;
 	let selectedFeeToken: TokenFee;
 	let rentFee = 0;
 	let mightCreateAccount = false;
@@ -104,7 +104,7 @@ export async function validateInstructions(
 					if (selectedFeeToken && feeToken.mint !== selectedFeeToken.mint) {
 						throw Error('must use 1 type of token as fee');
 					}
-					feePaid += amount;
+					feePaid += Number(amount) / 10 ** feeToken.decimals;
 					selectedFeeToken = feeToken;
 				}
 			} else {
@@ -113,6 +113,6 @@ export async function validateInstructions(
 		}
 	}
 
-	console.log(feePaid, rentFee, selectedFeeToken, '<-- validation result');
+	console.log(rentFee, selectedFeeToken, '<-- validation result');
 	return { feePaid, rentFee, feeToken: selectedFeeToken };
 }
