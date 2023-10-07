@@ -35,7 +35,7 @@ export class TokenFee {
 			this.mint.toString(),
 		);
 
-		return solPrice * (solAmount + 0.001);
+		return solPrice * solAmount;
 	}
 
 	toSerializable(): SerializableTokenFee {
