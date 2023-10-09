@@ -16,7 +16,8 @@ setExchangeFunction(async (from, to) => {
 	if (
 		process.env.ENVIRONMENT &&
 		from === 'So11111111111111111111111111111111111111112' &&
-		to === '7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz'
+		(to === '7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz' ||
+			'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr')
 	) {
 		const EXAMPLE_RATE = 15.6;
 		rate = EXAMPLE_RATE;
