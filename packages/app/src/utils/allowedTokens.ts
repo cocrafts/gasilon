@@ -2,14 +2,19 @@ import { TokenFee } from '@gasilon/solana';
 
 import config from '../../../../config.json';
 
-import { connection } from '.';
+import { connection, SOLANA_SECRET_KEYPAIR } from './setup';
 
 let allowedTokens: TokenFee[];
 
 export const getAllowedTokens = async () => {
 	if (!allowedTokens) {
-		const tokenFeePromises = config.endpoints.transfer.tokens.map((token) =>
-			TokenFee.createTokenFee(connection, token.mint, ''),
+		const tokenFeePromises = config.transfer.tokens.map((token) =>
+			TokenFee.createTokenFee(
+				connection,
+				token.mint,
+				SOLANA_SECRET_KEYPAIR.publicKey.toString(),
+				token.decimals,
+			),
 		);
 		allowedTokens = await Promise.all(tokenFeePromises);
 	}

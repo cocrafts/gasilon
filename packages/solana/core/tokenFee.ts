@@ -37,24 +37,28 @@ export class TokenFee {
 
 	static async createTokenFee(
 		connection: Connection,
-		mint: string,
-		owner: string,
+		mintAddress: string,
+		ownerAddress: string,
+		decimals: number,
 	) {
-		let mintPubKey: PublicKey, ownerPubKey: PublicKey;
+		let mint: PublicKey, owner: PublicKey;
 		try {
-			mintPubKey = new PublicKey(mint);
-			ownerPubKey = new PublicKey(owner);
+			mint = new PublicKey(mintAddress);
+			owner = new PublicKey(ownerAddress);
 		} catch {
-			throw Error(`invalid api config for this mint ${mint}, owner ${owner}`);
+			throw Error(
+				`invalid api config for this mint ${mintAddress}, owner ${ownerAddress}`,
+			);
 		}
 
-		const ownerATAddress = getAssociatedTokenAddressSync(
-			mintPubKey,
-			ownerPubKey,
-		);
+		const ownerATAddress = getAssociatedTokenAddressSync(mint, owner);
+		const ownerATAccount = await connection.getAccountInfo(ownerATAddress);
+		if (ownerATAccount.data.length === 0) {
+			throw Error(
+				`invalid api config, fee payer does not have account for this mint ${mintAddress}`,
+			);
+		}
 
-		console.log(ownerATAddress);
-
-		return new TokenFee(mintPubKey, ownerPubKey, 0);
+		return new TokenFee(mint, ownerATAddress, decimals);
 	}
 }

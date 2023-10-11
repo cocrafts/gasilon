@@ -3,7 +3,7 @@ import { LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js';
 import base58 from 'bs58';
 import type { Request, Response } from 'express';
 
-import { connection, ENV_SECRET_KEYPAIR, getAllowedTokens } from '../utils';
+import { connection, getAllowedTokens, SOLANA_SECRET_KEYPAIR } from '../utils';
 
 export const handleGetFee = async (req: Request, res: Response) => {
 	const serialized = req.body?.transaction;
@@ -29,7 +29,7 @@ export const handleGetFee = async (req: Request, res: Response) => {
 			connection,
 			transaction,
 			await getAllowedTokens(),
-			ENV_SECRET_KEYPAIR,
+			SOLANA_SECRET_KEYPAIR,
 		);
 
 		const gasilonFee = 0.0001 * LAMPORTS_PER_SOL;

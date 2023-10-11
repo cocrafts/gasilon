@@ -7,8 +7,8 @@ import config from '../../../../config.json';
 import {
 	cache,
 	connection,
-	ENV_SECRET_KEYPAIR,
 	getAllowedTokens,
+	SOLANA_SECRET_KEYPAIR,
 } from '../utils';
 
 export const handleTransfer = async (req: Request, res: Response) => {
@@ -34,7 +34,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 		const { signature } = await signGasilonTransaction({
 			connection,
 			transaction,
-			feePayer: ENV_SECRET_KEYPAIR,
+			feePayer: SOLANA_SECRET_KEYPAIR,
 			allowedTokens: await getAllowedTokens(),
 			cache: await cache,
 		});
@@ -45,7 +45,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 		}
 
 		transaction.addSignature(
-			ENV_SECRET_KEYPAIR.publicKey,
+			SOLANA_SECRET_KEYPAIR.publicKey,
 			Buffer.from(base58.decode(signature)),
 		);
 
