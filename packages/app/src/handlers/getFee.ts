@@ -32,17 +32,11 @@ export const handleGetFee = async (req: Request, res: Response) => {
 			ENV_SECRET_KEYPAIR,
 		);
 
+		const gasilonFee = 0.0001 * LAMPORTS_PER_SOL;
 		const signaturesFee = await transaction.getEstimatedFee(connection);
-		const totalFee = signaturesFee + rentFee + 0.001 * LAMPORTS_PER_SOL;
-		console.log(feeToken, '<--');
+		const totalFee = signaturesFee + rentFee + gasilonFee;
 		const fee = await feeToken.getAmountTokenFee(totalFee);
 
-		console.log(signaturesFee, fee, '<-- fee');
-
-		// ignore check fee paid when get price
-		// if (feePaid < fee * 0.9) throw new Error('invalid amount to pay fee');
-
-		// Respond with the confirmed transaction signature
 		res.status(200).json({
 			status: 'ok',
 			rentFee,

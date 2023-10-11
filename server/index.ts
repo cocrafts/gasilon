@@ -11,7 +11,6 @@ import app, { redisClient } from '@gasilon/app';
 import { getExchangeRate } from './../packages/app/src/utils';
 
 redisClient.connect().then(async () => {
-	console.log('here');
 	const rate = await getExchangeRate({
 		network: 'solana',
 		from: 'So11111111111111111111111111111111111111112',

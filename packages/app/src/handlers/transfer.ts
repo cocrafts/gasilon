@@ -53,10 +53,9 @@ export const handleTransfer = async (req: Request, res: Response) => {
 			commitment: 'confirmed',
 		});
 
-		// Respond with the confirmed transaction signature
 		res.status(200).json({ status: 'ok', signature });
 	} catch (error) {
-		console.log(error);
+		console.log('transfer error', error);
 		let message = '';
 		if (error instanceof Error) {
 			message = error.message;

@@ -25,6 +25,7 @@ setExchangeFunction(async (from, to) => {
 });
 
 export const app = express();
+
 app.use(cors());
 
 app.use(express.json());
@@ -46,7 +47,7 @@ app.use('*', (req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-	console.error(err.stack);
+	console.error('Non-catch error', err);
 	res.status(500).json('Something broke!');
 });
 

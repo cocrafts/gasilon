@@ -49,7 +49,6 @@ export async function validateInstructions(
 				mightCreateAccount = true;
 			}
 		}
-		console.log(instruction, '<-- instruction');
 
 		if (mightCreateAccount) {
 			if (instruction.programId.equals(ASSOCIATED_TOKEN_PROGRAM_ID)) {
@@ -113,6 +112,5 @@ export async function validateInstructions(
 		}
 	}
 
-	console.log(rentFee, selectedFeeToken, '<-- validation result');
 	return { feePaid, rentFee, feeToken: selectedFeeToken };
 }
