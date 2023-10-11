@@ -14,14 +14,19 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "sst dev",
         "build": "sst build",
-        "deploy": "sst deploy"
+        "deploy": "sst deploy",
+        "setup": "ts-node setup.ts"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@solana/spl-token": "^0.3.8",
+        "@solana/web3.js": "^1.78.5",
+        "@types/readline-sync": "^1.4.5",
         "aws-cdk-lib": "2.95.1",
         "constructs": "10.2.69",
+        "readline-sync": "^1.4.10",
         "sst": "2.26.8",
         "typescript": "^5.2.2"
     },

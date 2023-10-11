@@ -1,0 +1,92 @@
+import {
+	createAssociatedTokenAccountInstruction,
+	getAssociatedTokenAddressSync,
+} from '@solana/spl-token';
+import {
+	clusterApiUrl,
+	Connection,
+	Keypair,
+	PublicKey,
+	sendAndConfirmTransaction,
+	Transaction,
+} from '@solana/web3.js';
+import base58 from 'bs58';
+import dotenv from 'dotenv';
+import readline from 'readline-sync';
+
+import config from './config.json';
+
+dotenv.config();
+
+async function main() {
+	const connection = new Connection(
+		process.env.ENVIRONMENT === 'production'
+			? clusterApiUrl('mainnet-beta')
+			: clusterApiUrl('devnet'),
+		'confirmed',
+	);
+
+	const SOLANA_SECRET_KEY = process.env.SOLANA_SECRET_KEY;
+	const keypair = Keypair.fromSecretKey(base58.decode(SOLANA_SECRET_KEY));
+
+	const tokens = config.transfer.tokens.filter((token) => {
+		if (
+			process.env.ENVIRONMENT === 'production' &&
+			(token.mint === '7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz' ||
+				token.mint === 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr')
+		) {
+			return false;
+		} else {
+			return true;
+		}
+	});
+
+	for (let i = 0; i < tokens.length; i++) {
+		console.log(
+			`\nCheck account for owner ${keypair.publicKey.toString()} with token: \n\tName: ${
+				tokens[i].name
+			}\n\tMint: ${tokens[i].mint}`,
+		);
+
+		const mint = new PublicKey(tokens[i].mint);
+		const atAddress = getAssociatedTokenAddressSync(mint, keypair.publicKey);
+		const atAccount = await connection.getAccountInfo(atAddress, 'confirmed');
+
+		if (!atAccount) {
+			console.log('\t-> Not found associated account');
+			const answer = readline
+				.question(
+					'Do you want to create associated account for this token (y/n)? ',
+				)
+				.trim()
+				.toLowerCase();
+
+			if (answer == 'y') {
+				console.log('-> Create account...');
+				try {
+					const transaction = new Transaction().add(
+						createAssociatedTokenAccountInstruction(
+							keypair.publicKey,
+							atAddress,
+							keypair.publicKey,
+							mint,
+						),
+					);
+					const result = await sendAndConfirmTransaction(
+						connection,
+						transaction,
+						[keypair],
+						{
+							commitment: 'confirmed',
+						},
+					);
+					console.log('-> Create successfully', result);
+				} catch (e) {
+					console.log('-> Create failed', e.message);
+				}
+			}
+		}
+	}
+}
+
+main();

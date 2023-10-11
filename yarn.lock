@@ -3459,6 +3459,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/readline-sync@npm:^1.4.5":
+  version: 1.4.5
+  resolution: "@types/readline-sync@npm:1.4.5"
+  checksum: 54891175338b75e7a37fc41506d6f7632be79729314e04d171ad16127cee284d97b31f50c40e39db48f39fde64eb37d586b85d6c72c15dc8f9769cf9ae1c1504
+  languageName: node
+  linkType: hard
+
 "@types/semver@npm:^7.5.0":
   version: 7.5.3
   resolution: "@types/semver@npm:7.5.3"
@@ -6582,6 +6589,9 @@ __metadata:
   resolution: "gasilon@workspace:."
   dependencies:
     "@next/eslint-plugin-next": ^13.5.2
+    "@solana/spl-token": ^0.3.8
+    "@solana/web3.js": ^1.78.5
+    "@types/readline-sync": ^1.4.5
     "@typescript-eslint/eslint-plugin": ^6.7.2
     "@typescript-eslint/parser": ^6.7.2
     "@walless/eslint-config": ^0.0.5
@@ -6596,6 +6606,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-simple-import-sort: ^10.0.0
     prettier: ^3.0.3
+    readline-sync: ^1.4.10
     sst: 2.26.8
     typescript: ^5.2.2
   languageName: unknown
@@ -9348,6 +9359,13 @@ __metadata:
   dependencies:
     picomatch: ^2.2.1
   checksum: 1ced032e6e45670b6d7352d71d21ce7edf7b9b928494dcaba6f11fba63180d9da6cd7061ebc34175ffda6ff529f481818c962952004d273178acd70f7059b320
+  languageName: node
+  linkType: hard
+
+"readline-sync@npm:^1.4.10":
+  version: 1.4.10
+  resolution: "readline-sync@npm:1.4.10"
+  checksum: 4dbd8925af028dc4cb1bb813f51ca3479035199aa5224886b560eec8e768ab27d7ebf11d69a67ed93d5a130b7c994f0bdb77796326e563cf928bbfd560e3747e
   languageName: node
   linkType: hard
 
