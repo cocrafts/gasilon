@@ -14,7 +14,8 @@ export default {
 			nodejs: { format: 'cjs' },
 		});
 
-		app.stack(({ stack }) => {
+		app.stack(({ stack, app }) => {
+			const domain = domainFromStage(app.stage);
 			const gasilon = new Function(stack, 'gasilon', {
 				handler: 'lambda/index.handler',
 				copyFiles: [{ from: './config.json' }],
@@ -34,6 +35,7 @@ export default {
 					'GET /api/gasilon/{proxy+}': gasilon,
 					'POST /api/gasilon/{proxy+}': gasilon,
 				},
+				customDomain: domain,
 			});
 
 			stack.addOutputs({
@@ -42,3 +44,14 @@ export default {
 		});
 	},
 } satisfies SSTConfig;
+
+const apiAlias = {
+	production: 'gasilon.',
+	staging: 'gasilon-stg.',
+	development: 'gasilon-dev.',
+};
+
+export const domainFromStage = (stage: string) => {
+	const prefix = apiAlias[stage] || `gasilon-${stage}.`; 
+	return `${prefix}walless.io`;
+};
