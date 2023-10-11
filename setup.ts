@@ -1,4 +1,5 @@
 import {
+	ACCOUNT_SIZE,
 	createAssociatedTokenAccountInstruction,
 	getAssociatedTokenAddressSync,
 } from '@solana/spl-token';
@@ -6,6 +7,7 @@ import {
 	clusterApiUrl,
 	Connection,
 	Keypair,
+	LAMPORTS_PER_SOL,
 	PublicKey,
 	sendAndConfirmTransaction,
 	Transaction,
@@ -19,6 +21,12 @@ import config from './config.json';
 dotenv.config();
 
 async function main() {
+	if (process.env.ENVIRONMENT === 'production') {
+		console.log('Use mainnet beta');
+	} else {
+		console.log('Use devnet');
+	}
+
 	const connection = new Connection(
 		process.env.ENVIRONMENT === 'production'
 			? clusterApiUrl('mainnet-beta')
@@ -56,7 +64,10 @@ async function main() {
 			console.log('\t-> Not found associated account');
 			const answer = readline
 				.question(
-					'Do you want to create associated account for this token (y/n)? ',
+					`Do you want to create associated account for this token, fee: ${
+						(await connection.getMinimumBalanceForRentExemption(ACCOUNT_SIZE)) /
+						LAMPORTS_PER_SOL
+					} SOL - (y/n)? `,
 				)
 				.trim()
 				.toLowerCase();
