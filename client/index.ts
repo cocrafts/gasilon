@@ -67,7 +67,7 @@ async function main() {
 			ata,
 			feePayerGasAta,
 			keypair.publicKey,
-			0.01 * 10 ** 9, // hard code required 0.01 Token as gas fee (decimals is 9)
+			0.002423 * 10 ** 9, // hard code required 0.01 Token as gas fee (decimals is 9)
 		),
 	);
 

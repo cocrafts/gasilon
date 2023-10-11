@@ -42,10 +42,12 @@ export const signGasilonTransaction: SignGasilonFunction = async ({
 		feePayer,
 	);
 
+	const gasilonFee = 0.0001 * LAMPORTS_PER_SOL;
 	const estimatedFee = await transaction.getEstimatedFee(connection);
-	const totalFee = estimatedFee + rentFee + 0.001 * LAMPORTS_PER_SOL;
+	const totalFee = estimatedFee + rentFee + gasilonFee;
 	const fee = await feeToken.getAmountTokenFee(totalFee);
 
+	console.log(feePaid, fee, '<-- fee compare');
 	if (feePaid < fee * 0.9) throw new Error('invalid amount to pay fee');
 
 	transaction.partialSign(feePayer);
