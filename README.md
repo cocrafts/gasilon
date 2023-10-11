@@ -19,5 +19,5 @@ REDIS_HOST
 Run the cli to check associated account for fee tokens in the config list
 
 ```
-yarn run setup
+yarn setup
 ```
