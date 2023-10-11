@@ -1,4 +1,7 @@
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { getAssociatedTokenAddressSync } from '@solana/spl-token';
+import type { Connection } from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 type ExchangeFunction = (from: string, to: string) => Promise<number>;
 let getExchangeRate: ExchangeFunction;
@@ -7,18 +10,12 @@ export const setExchangeFunction = (func: ExchangeFunction) => {
 	getExchangeRate = func;
 };
 
-type SerializableTokenFee = {
-	mint: string;
-	account: string;
-	decimals: number;
-};
-
 export class TokenFee {
 	public mint: PublicKey;
 	public account: PublicKey;
 	public decimals: number;
 
-	constructor(mint: PublicKey, account: PublicKey, decimals: number) {
+	private constructor(mint: PublicKey, account: PublicKey, decimals: number) {
 		this.mint = mint;
 		this.account = account;
 		this.decimals = decimals;
@@ -38,19 +35,26 @@ export class TokenFee {
 		return solPrice * solAmount;
 	}
 
-	toSerializable(): SerializableTokenFee {
-		return {
-			mint: this.mint.toBase58(),
-			account: this.account.toBase58(),
-			decimals: this.decimals,
-		};
-	}
+	static async createTokenFee(
+		connection: Connection,
+		mint: string,
+		owner: string,
+	) {
+		let mintPubKey: PublicKey, ownerPubKey: PublicKey;
+		try {
+			mintPubKey = new PublicKey(mint);
+			ownerPubKey = new PublicKey(owner);
+		} catch {
+			throw Error(`invalid api config for this mint ${mint}, owner ${owner}`);
+		}
 
-	static fromSerializable(serializableToken: SerializableTokenFee): TokenFee {
-		return new TokenFee(
-			new PublicKey(serializableToken.mint),
-			new PublicKey(serializableToken.account),
-			serializableToken.decimals,
+		const ownerATAddress = getAssociatedTokenAddressSync(
+			mintPubKey,
+			ownerPubKey,
 		);
+
+		console.log(ownerATAddress);
+
+		return new TokenFee(mintPubKey, ownerPubKey, 0);
 	}
 }

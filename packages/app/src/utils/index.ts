@@ -22,4 +22,5 @@ export const cache = cacheManager.caching('memory', {
 	ttl: 120 /*seconds*/,
 });
 
+export * from './allowedTokens';
 export * from './redis';

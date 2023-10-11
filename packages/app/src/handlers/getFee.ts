@@ -1,13 +1,11 @@
-import { TokenFee } from '@gasilon/solana';
-import { validateInstructions } from '@gasilon/solana/coreV2';
+import { validateInstructions } from '@gasilon/solana';
 import { LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js';
 import base58 from 'bs58';
 import type { Request, Response } from 'express';
 
-import config from '../../../../config.json';
-import { connection, ENV_SECRET_KEYPAIR } from '../utils';
+import { connection, ENV_SECRET_KEYPAIR, getAllowedTokens } from '../utils';
 
-export const handleGetGasilonFee = async (req: Request, res: Response) => {
+export const handleGetFee = async (req: Request, res: Response) => {
 	const serialized = req.body?.transaction;
 	if (typeof serialized !== 'string') {
 		res
@@ -30,9 +28,7 @@ export const handleGetGasilonFee = async (req: Request, res: Response) => {
 		const { feeToken, rentFee } = await validateInstructions(
 			connection,
 			transaction,
-			config.endpoints.transfer.tokens.map((token) =>
-				TokenFee.fromSerializable(token),
-			),
+			await getAllowedTokens(),
 			ENV_SECRET_KEYPAIR,
 		);
 

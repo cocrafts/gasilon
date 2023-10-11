@@ -120,7 +120,7 @@ async function main() {
 
 	try {
 		// Call API
-		const result = await axios.post('/solana/transferV2', {
+		const result = await axios.post('/solana/getFee', {
 			transaction: txStr,
 		});
 		console.log(result.data, '<-- success');

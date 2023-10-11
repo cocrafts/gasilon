@@ -9,7 +9,7 @@ import type { Cache } from 'cache-manager';
 
 import type { TokenFee } from '../core';
 import { sha256, simulateRawTransaction } from '../core';
-import { validateInstructions } from '../coreV2/validation';
+import { validateInstructions } from '../core/validation';
 
 type SignGasilonFunction = (props: {
 	connection: Connection;

@@ -1,10 +1,15 @@
-import { signWithTokenFee, TokenFee } from '@gasilon/solana';
+import { signGasilonTransaction } from '@gasilon/solana';
 import { sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js';
 import base58 from 'bs58';
 import type { Request, Response } from 'express';
 
 import config from '../../../../config.json';
-import { cache, connection, ENV_SECRET_KEYPAIR } from '../utils';
+import {
+	cache,
+	connection,
+	ENV_SECRET_KEYPAIR,
+	getAllowedTokens,
+} from '../utils';
 
 export const handleTransfer = async (req: Request, res: Response) => {
 	const serialized = req.body?.transaction;
@@ -26,17 +31,13 @@ export const handleTransfer = async (req: Request, res: Response) => {
 	}
 
 	try {
-		const { signature } = await signWithTokenFee(
+		const { signature } = await signGasilonTransaction({
 			connection,
 			transaction,
-			ENV_SECRET_KEYPAIR,
-			config.maxSignatures,
-			config.lamportsPerSignature,
-			config.endpoints.transfer.tokens.map((token) =>
-				TokenFee.fromSerializable(token),
-			),
-			await cache,
-		);
+			feePayer: ENV_SECRET_KEYPAIR,
+			allowedTokens: await getAllowedTokens(),
+			cache: await cache,
+		});
 
 		if ((config as any).returnSignature !== undefined) {
 			res.status(200).json({ status: 'ok', signature });
@@ -55,6 +56,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 		// Respond with the confirmed transaction signature
 		res.status(200).json({ status: 'ok', signature });
 	} catch (error) {
+		console.log(error);
 		let message = '';
 		if (error instanceof Error) {
 			message = error.message;

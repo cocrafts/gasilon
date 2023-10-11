@@ -11,8 +11,8 @@ import {
 import type { Connection, Transaction } from '@solana/web3.js';
 import { type Keypair } from '@solana/web3.js';
 
-import { areInstructionsEqual } from '../core/instructions';
-import type { TokenFee } from '../core/tokenFee';
+import { areInstructionsEqual } from './instructions';
+import type { TokenFee } from './tokenFee';
 
 export async function validateTransaction(
 	transaction: Transaction,

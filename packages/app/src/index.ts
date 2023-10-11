@@ -3,12 +3,7 @@ import cors from 'cors';
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 
-import {
-	handleGetConfig,
-	handleGetGasilonFee,
-	handleTransfer,
-	handleTransferGasilon,
-} from './handlers';
+import { handleGetConfig, handleGetFee, handleTransfer } from './handlers';
 import { getExchangeRate } from './utils';
 
 setExchangeFunction(async (from, to) => {
@@ -36,14 +31,12 @@ app.use(express.json());
 
 app.get('/api/gasilon', handleGetConfig);
 app.post('/api/gasilon', handleGetConfig);
+
+app.get('/api/gasilon/solana/getFee', handleGetFee);
+app.post('/api/gasilon/solana/getFee', handleGetFee);
+
 app.get('/api/gasilon/solana/transfer', handleTransfer);
 app.post('/api/gasilon/solana/transfer', handleTransfer);
-
-app.get('/api/gasilon/solana/getFee', handleGetGasilonFee);
-app.post('/api/gasilon/solana/getFee', handleGetGasilonFee);
-
-app.get('/api/gasilon/solana/transferV2', handleTransferGasilon);
-app.post('/api/gasilon/solana/transferV2', handleTransferGasilon);
 
 app.use('*', (req, res) => {
 	res.json({

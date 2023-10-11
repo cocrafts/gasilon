@@ -1,4 +1,3 @@
 export * from './getConfig';
-export * from './getGasilonFee';
+export * from './getFee';
 export * from './transfer';
-export * from './transferGasilon';
