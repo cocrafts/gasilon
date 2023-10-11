@@ -40,6 +40,7 @@ export default {
 
 			stack.addOutputs({
 				url: API.url,
+				domain: API.customDomainUrl,
 			});
 		});
 	},

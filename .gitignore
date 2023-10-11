@@ -17,3 +17,4 @@ zig-out
 **/build
 
 .sst
+cdk.context.json
