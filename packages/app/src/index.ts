@@ -9,7 +9,7 @@ import { getExchangeRate } from './utils';
 setExchangeFunction(async (from, to) => {
 	let rate: number;
 	if (
-		process.env.ENVIRONMENT &&
+		process.env.ENVIRONMENT === 'production' &&
 		from === 'So11111111111111111111111111111111111111112' &&
 		(to === '7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz' ||
 			'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr')
