@@ -38,14 +38,14 @@ async function main() {
 	const keypair = Keypair.fromSecretKey(base58.decode(SOLANA_SECRET_KEY));
 
 	const tokens = config.transfer.tokens.filter((token) => {
-		if (
-			process.env.ENVIRONMENT === 'production' &&
-			(token.mint === '7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz' ||
-				token.mint === 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr')
-		) {
-			return false;
+		const sampleMints = [
+			'7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz',
+			'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr',
+		];
+		if (process.env.ENVIRONMENT === 'production') {
+			return !sampleMints.includes(token.mint);
 		} else {
-			return true;
+			return sampleMints.includes(token.mint);
 		}
 	});
 

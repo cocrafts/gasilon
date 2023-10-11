@@ -35,6 +35,15 @@ export class TokenFee {
 		return solPrice * solAmount;
 	}
 
+	async getExchangeRateFromSolToToken() {
+		const solPrice = await getExchangeRate(
+			'So11111111111111111111111111111111111111112',
+			this.mint.toString(),
+		);
+
+		return solPrice;
+	}
+
 	static async createTokenFee(
 		connection: Connection,
 		mintAddress: string,
@@ -53,7 +62,7 @@ export class TokenFee {
 
 		const ownerATAddress = getAssociatedTokenAddressSync(mint, owner);
 		const ownerATAccount = await connection.getAccountInfo(ownerATAddress);
-		if (ownerATAccount.data.length === 0) {
+		if (!ownerATAccount) {
 			throw Error(
 				`invalid api config, fee payer does not have account for this mint ${mintAddress}`,
 			);

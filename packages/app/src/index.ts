@@ -7,18 +7,16 @@ import { handleGetConfig, handleGetFee, handleTransfer } from './handlers';
 import { getExchangeRate } from './utils';
 
 setExchangeFunction(async (from, to) => {
-	let rate: number;
 	if (
-		process.env.ENVIRONMENT === 'production' &&
+		process.env.ENVIRONMENT !== 'production' &&
 		from === 'So11111111111111111111111111111111111111112' &&
 		(to === '7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz' ||
 			'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr')
 	) {
-		const EXAMPLE_RATE = 15.6;
-		rate = EXAMPLE_RATE;
-	} else {
-		rate = await getExchangeRate({ network: 'solana', from, to });
+		to = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 	}
+
+	const rate = await getExchangeRate({ network: 'solana', from, to });
 	console.log(`Exchange rate from ${from} to ${to}: ${rate}`);
 
 	return rate;

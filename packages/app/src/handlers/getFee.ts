@@ -36,12 +36,14 @@ export const handleGetFee = async (req: Request, res: Response) => {
 		const signaturesFee = await transaction.getEstimatedFee(connection);
 		const totalFee = signaturesFee + rentFee + gasilonFee;
 		const fee = await feeToken.getAmountTokenFee(totalFee);
+		const solToToken = await feeToken.getExchangeRateFromSolToToken();
 
 		res.status(200).json({
 			status: 'ok',
+			feeToken,
 			rentFee,
 			signaturesFee,
-			feeToken,
+			solToToken,
 			totalByFeeToken: fee,
 		});
 	} catch (error) {
