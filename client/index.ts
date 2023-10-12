@@ -47,6 +47,8 @@ async function main() {
 
 		const senderKeypair = Keypair.fromSecretKey(base58.decode(privateKeyStr));
 
+		console.log('\n----------------------\nInit Transaction:');
+
 		const tokens = (await getTokens(connection, senderKeypair.publicKey)).value;
 		if (tokens.length === 0) {
 			console.log('Not found any token for this account');
@@ -87,7 +89,6 @@ async function main() {
 				continue;
 			}
 		}
-		console.log('amount', amount, 'decimals', decimals);
 
 		let receiverStr = '';
 		while (!receiverStr) {
