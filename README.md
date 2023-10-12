@@ -14,10 +14,7 @@ REDIS_PASSWORD
 REDIS_HOST
 ```
 
-## Prepare fee payer
-
-Run the cli to check associated account for fee tokens in the config list
-
-```
-yarn setup
-```
+## Deploy to production (AWS only for now, welcome PR for another platforms)
+1. make sure `.env` file configured as described above
+2. run `yarn setup` to check associated accounts (for fee tokens in the config list)
+3. run `yarn deploy` to deploy this to AWS (see sst.config.ts for further details)
