@@ -96,6 +96,8 @@ async function main() {
 					console.log('-> Create failed', e.message);
 				}
 			}
+		} else {
+			console.log(`\tATA: ${atAddress.toBase58()} (ready, skip creation)`);
 		}
 	}
 }
