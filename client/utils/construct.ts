@@ -53,7 +53,11 @@ export async function constructTransaction({
 	const senderATA = getAssociatedTokenAddressSync(sendToken, sender.publicKey);
 	const receiverATA = getAssociatedTokenAddressSync(sendToken, receiver);
 
-	const receiverATAccount = connection.getAccountInfo(receiverATA, 'confirmed');
+	const receiverATAccount = await connection.getAccountInfo(
+		receiverATA,
+		'confirmed',
+	);
+
 	if (!receiverATAccount) {
 		transaction.add(
 			createAssociatedTokenAccountInstruction(

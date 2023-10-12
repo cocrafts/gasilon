@@ -6,9 +6,7 @@ import type { GasilonTransaction } from './construct';
 import { constructTransaction } from './construct';
 
 export async function transfer(props: GasilonTransaction) {
-	console.log('transfer');
 	const transaction = await constructTransaction(props);
-	console.log(transaction, '<--');
 
 	const txV0 = new VersionedTransaction(
 		VersionedMessage.deserialize(transaction.serializeMessage()),

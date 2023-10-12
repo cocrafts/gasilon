@@ -17,6 +17,7 @@ const connection = new Connection(
 	process.env.ENVIRONMENT === 'production'
 		? clusterApiUrl('mainnet-beta')
 		: clusterApiUrl('devnet'),
+	'confirmed',
 );
 
 if (process.env.ENVIRONMENT === 'production') {
@@ -69,11 +70,15 @@ async function main() {
 		const sendToken = tokens[tokenIdx];
 		const total = Number(sendToken.account.data.parsed.info.tokenAmount.amount);
 		const decimals = sendToken.account.data.parsed.info.tokenAmount.decimals;
-		const totalAmount = total / 10 ** decimals;
+		const totalAmount = total;
 		let amount = 0;
 		while (!amount) {
 			try {
-				amount = readline.questionFloat(`Input amount (max: ${totalAmount}): `);
+				amount =
+					readline.questionFloat(
+						`Input amount (max: ${totalAmount / 10 ** decimals}): `,
+					) *
+					10 ** decimals;
 				if (amount > totalAmount) {
 					console.log("Don't enough amount!");
 					amount = 0;
@@ -82,6 +87,7 @@ async function main() {
 				continue;
 			}
 		}
+		console.log('amount', amount, 'decimals', decimals);
 
 		let receiverStr = '';
 		while (!receiverStr) {
@@ -126,6 +132,7 @@ async function main() {
 			feePayer: new PublicKey(gasilonConfig?.feePayer),
 		};
 
+		console.log('\n----------------------\nAction:', action);
 		const fee = await getFee(gasilonTransaction);
 		if (!fee) return;
 
@@ -139,7 +146,6 @@ async function main() {
 					...gasilonTransaction,
 					feeAmount: Math.floor(fee?.totalByFeeToken * 10 ** feeToken.decimals),
 				});
-				console.log(result, '<----');
 
 				if (result) console.log(result);
 			}

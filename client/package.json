@@ -3,7 +3,9 @@
     "version": "0.0.1",
     "main": "index.js",
     "scripts": {
-        "dev": "ts-node index.ts"
+        "dev": "ts-node index.ts",
+        "get-fee": "ts-node index.ts gasilon get-fee",
+        "transfer": "ts-node index.ts gasilon transfer"
     },
     "author": "Tan Le",
     "license": "MIT",
