@@ -139,7 +139,9 @@ async function main() {
 
 		if (action == 'transfer') {
 			const accept = readline
-				.question(`Fee: ${fee.totalByFeeToken} -> continue to transfer (y/N)? `)
+				.question(
+					`Fee: ${fee.totalByFeeToken} ${feeToken.name} -> continue to transfer (y/N)? `,
+				)
 				.toLowerCase();
 			if (accept === 'y') {
 				console.log('Transfer...');
