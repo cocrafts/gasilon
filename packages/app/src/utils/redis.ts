@@ -9,8 +9,8 @@ export const redisClient = createClient({
 	},
 });
 
-redisClient.on('error', () => {
-	console.log('Redis client error');
+redisClient.on('error', (e) => {
+	console.log('Redis client error', e);
 });
 
 type TokenInfo = {

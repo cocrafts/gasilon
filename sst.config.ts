@@ -33,10 +33,10 @@ export default {
 					allowOrigins: ['*'],
 				},
 				routes: {
-					'GET /api/gasilon': gasilon,
-					'POST /api/gasilon': gasilon,
-					'GET /api/gasilon/{proxy+}': gasilon,
-					'POST /api/gasilon/{proxy+}': gasilon,
+					'GET /api': gasilon,
+					'POST /api': gasilon,
+					'GET /api/{proxy+}': gasilon,
+					'POST /api/{proxy+}': gasilon,
 				},
 				customDomain: domain,
 			});

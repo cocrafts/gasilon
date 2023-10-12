@@ -28,14 +28,14 @@ app.use(cors());
 
 app.use(express.json());
 
-app.get('/api/gasilon', handleGetConfig);
-app.post('/api/gasilon', handleGetConfig);
+app.get('/api', handleGetConfig);
+app.post('/api', handleGetConfig);
 
-app.get('/api/gasilon/solana/getFee', handleGetFee);
-app.post('/api/gasilon/solana/getFee', handleGetFee);
+app.get('/api/solana/getFee', handleGetFee);
+app.post('/api/solana/getFee', handleGetFee);
 
-app.get('/api/gasilon/solana/transfer', handleTransfer);
-app.post('/api/gasilon/solana/transfer', handleTransfer);
+app.get('/api/solana/transfer', handleTransfer);
+app.post('/api/solana/transfer', handleTransfer);
 
 app.use('*', (req, res) => {
 	res.json({
