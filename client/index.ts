@@ -1,121 +1,132 @@
-import {
-	createTransferInstruction,
-	getAssociatedTokenAddressSync,
-} from '@solana/spl-token';
-import {
-	clusterApiUrl,
-	Connection,
-	Keypair,
-	PublicKey,
-	Transaction,
-	VersionedMessage,
-	VersionedTransaction,
-} from '@solana/web3.js';
-import axios from 'axios';
-import base58 from 'bs58';
 import dotenv from 'dotenv';
-
+dotenv.config({ path: '../.env' });
 dotenv.config();
 
-/**
- * Config these resources:
- * - octane url
- * - a wallet keypair (available in wallet)
- * - connection with correct endpoint
- * */
+import { clusterApiUrl, Connection, Keypair, PublicKey } from '@solana/web3.js';
+import axios from 'axios';
+import base58 from 'bs58';
+import readline from 'readline-sync';
+
+import { getFee } from './utils/getFee';
+import { getInfo } from './utils/getInfo';
+import { getTokens } from './utils/getTokens';
+
 axios.defaults.baseURL = process.env.GASILON_ENDPOINT;
 const privateKeyStr = process.env.PRIVATE_KEY as string;
-const connection = new Connection(clusterApiUrl('devnet'));
 
-console.log(process.env.GASILON_ENDPOINT, '<-- api endpoint');
+const connection = new Connection(
+	process.env.ENVIRONMENT === 'production'
+		? clusterApiUrl('mainnet-beta')
+		: clusterApiUrl('devnet'),
+);
 
 async function main() {
-	// Prepare user's keypair - available in wallet
-	const keypair = Keypair.fromSecretKey(base58.decode(privateKeyStr));
-	console.log(keypair.publicKey.toString(), '<-- public key of user');
-	const ata = getAssociatedTokenAddressSync(
-		new PublicKey('7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz'),
-		keypair.publicKey,
-	);
+	console.log('Gasilon client CLI');
+	console.log('Commands:');
+	console.log('\tgasilon [transfer|get-fee]');
 
-	// Prepare generic transaction with no instructions
-	const bh = await connection.getLatestBlockhash();
-	const blockhash = bh.blockhash;
-	const lastValidBlockHeight = bh.lastValidBlockHeight;
-	const transaction = new Transaction({
-		blockhash,
-		lastValidBlockHeight,
-	});
+	const gasilonIdx = process.argv.findIndex((ele) => ele === 'gasilon');
+	if (gasilonIdx != -1) {
+		console.log('\nGasilon client');
+		if (process.argv.length <= gasilonIdx + 1) {
+			console.log('invalid arguments, require actions [transfer|get-fee]');
+			process.exit(-1);
+		}
 
-	/**
-	 * Call API to get data uses for initialize transaction
-	 * - get fee payer public key
-	 * - The tokens are supported as gas fee must be sent, but it currently does not support
-	 *      - Use 7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz
-	 * */
-	const octaneConfig = (await axios.get('/')).data;
+		const action = process.argv[gasilonIdx + 1];
+		if (!['transfer', 'get-fee'].includes(action)) {
+			console.log('invalid arguments, require actions [transfer|get-fee]');
+			process.exit(-1);
+		}
 
-	const feePayer = new PublicKey(octaneConfig.feePayer);
-	const feePayerGasAta = getAssociatedTokenAddressSync(
-		new PublicKey('7aeyZfAc5nVxycY4XEfXvTZ4tsEcqPs8p3gJhEmreXoz'),
-		feePayer,
-	);
+		const senderKeypair = Keypair.fromSecretKey(base58.decode(privateKeyStr));
 
-	// the first instruction must send some supported token as gas fee for feePayer
-	transaction.add(
-		createTransferInstruction(
-			ata,
-			feePayerGasAta,
-			keypair.publicKey,
-			0.002423 * 10 ** 9, // hard code required 0.01 Token as gas fee (decimals is 9)
-		),
-	);
+		if (action == 'transfer') {
+			console.log('transfer');
+		} else if (action == 'get-fee') {
+			const tokens = (await getTokens(connection, senderKeypair.publicKey))
+				.value;
 
-	const receiver = new PublicKey(
-		'EiPNEETabLepjopeJQWtqM154FSwCosHk6nt9zDEhCtk',
-	);
+			const tokenInfos = await getInfo(
+				tokens.map((ele) => ele.account.data.parsed.info.mint),
+			);
 
-	const USDCDev = new PublicKey('Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr');
-	const receiverUSDCAta = getAssociatedTokenAddressSync(USDCDev, receiver);
-	const sourceUSDCAta = getAssociatedTokenAddressSync(
-		USDCDev,
-		keypair.publicKey,
-	);
+			tokens.map((token, index) => {
+				const amount = Number(
+					token.account.data.parsed.info.tokenAmount.amount,
+				);
+				const decimals = token.account.data.parsed.info.tokenAmount.decimals;
+				console.log(
+					`Index: ${index} - Name: ${tokenInfos[index]} - Mint: ${
+						token.account.data.parsed.info.mint
+					} - Amount: ${amount / 10 ** decimals}`,
+				);
+			});
 
-	// Any instructions following
-	transaction.add(
-		createTransferInstruction(
-			sourceUSDCAta,
-			receiverUSDCAta,
-			keypair.publicKey,
-			1 * 10 ** 6,
-		),
-	);
+			const tokenIdx = readline.questionInt('Choose token to send (index): ');
+			const sendToken = tokens[tokenIdx];
+			const total = Number(
+				sendToken.account.data.parsed.info.tokenAmount.amount,
+			);
+			const decimals = sendToken.account.data.parsed.info.tokenAmount.decimals;
+			const totalAmount = total / 10 ** decimals;
+			let amount = 0;
+			while (!amount) {
+				try {
+					amount = readline.questionFloat(
+						`Input amount (max: ${totalAmount}): `,
+					);
+					if (amount > totalAmount) {
+						console.log("Don't enough amount!");
+						amount = 0;
+					}
+				} catch (_) {
+					continue;
+				}
+			}
 
-	// Config fee payer
-	transaction.feePayer = feePayer;
+			let receiverStr = '';
+			while (!receiverStr) {
+				receiverStr = readline.question('Receiver Address: ');
+				try {
+					new PublicKey(receiverStr);
+				} catch (_) {
+					console.log('Invalid address, retry!');
+				}
+			}
 
-	// Convert legacy transaction to v0 transaction (lower transaction fee)
-	const txV0 = new VersionedTransaction(
-		VersionedMessage.deserialize(transaction.serializeMessage()),
-	);
+			const feeTokens = (await axios.get('/')).data?.transfer.tokens;
+			const availableMints = tokens.map((t) => t.account.data.parsed.info.mint);
+			const availableFeeTokens = feeTokens.filter((ele) =>
+				availableMints.includes(ele.mint),
+			);
 
-	// Sign transaction by user's keypair
-	txV0.sign([keypair]);
+			if (availableFeeTokens.length === 0) {
+				console.log('Not found any supported tokens to pay fee');
+				process.exit(1);
+			}
 
-	// Serialize transaction to send to Octane
-	const txStr = base58.encode(txV0.serialize());
-	console.log(txStr, '<-- transaction');
+			availableFeeTokens.map((token, index) => {
+				console.log(
+					`Index: ${index} - Name: ${availableFeeTokens[index].name} - Mint: ${availableFeeTokens[index].name}`,
+				);
+			});
+			const feeTokenIndex = readline.questionInt(
+				'Choose token to use as gas fee (index): ',
+			);
 
-	try {
-		// Call API
-		const result = await axios.post('/solana/transfer', {
-			transaction: txStr,
-		});
-		console.log(result.data, '<-- success');
-	} catch (error) {
-		// console.log(error.request.body, '<-- request');
-		console.log(error.response.data.message, '<-- fail');
+			console.log('Get fee...');
+
+			const fee = getFee(
+				senderKeypair,
+				new PublicKey(receiverStr),
+				new PublicKey(availableFeeTokens[feeTokenIndex].mint),
+				new PublicKey(sendToken),
+				amount,
+			);
+
+			console.log(fee);
+		}
 	}
 }
 
