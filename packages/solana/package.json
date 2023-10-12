@@ -15,13 +15,13 @@
         "@solana/spl-token": "^0.3.8",
         "@solana/web3.js": "^1.78.5",
         "axios": "^1.5.1",
-        "cache-manager": "^3.6.0",
+        "cache-manager": "^5.2.4",
         "tweetnacl": "^1.0.3"
     },
     "devDependencies": {
         "@types/bn.js": "^5.1.0",
         "@types/bs58": "^4.0.1",
-        "@types/cache-manager": "^4.0.3",
+        "@types/cache-manager": "^3.6.0",
         "@types/chai-as-promised": "^7.1.4",
         "@types/mocha": "^9.0.0",
         "@types/node": "^16.11.13",
