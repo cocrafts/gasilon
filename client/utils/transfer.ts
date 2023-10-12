@@ -1,5 +1,4 @@
 import {
-	createAssociatedTokenAccountInstruction,
 	createTransferInstruction,
 	getAssociatedTokenAddressSync,
 } from '@solana/spl-token';
@@ -68,29 +67,19 @@ async function main() {
 			ata,
 			feePayerGasAta,
 			keypair.publicKey,
-			0.01 * 10 ** 9, // hard code required 0.01 Token as gas fee (decimals is 9)
+			0.002423 * 10 ** 9, // hard code required 0.01 Token as gas fee (decimals is 9)
 		),
 	);
 
-	const receiver = Keypair.generate().publicKey;
+	const receiver = new PublicKey(
+		'EiPNEETabLepjopeJQWtqM154FSwCosHk6nt9zDEhCtk',
+	);
 
 	const USDCDev = new PublicKey('Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr');
 	const receiverUSDCAta = getAssociatedTokenAddressSync(USDCDev, receiver);
 	const sourceUSDCAta = getAssociatedTokenAddressSync(
 		USDCDev,
 		keypair.publicKey,
-	);
-
-	const feePayerUsdcDevAta = getAssociatedTokenAddressSync(USDCDev, feePayer);
-	console.log('fee payer usdc dev ata', feePayerUsdcDevAta.toString());
-
-	transaction.add(
-		createAssociatedTokenAccountInstruction(
-			feePayer,
-			receiverUSDCAta,
-			receiver,
-			USDCDev,
-		),
 	);
 
 	// Any instructions following
@@ -120,7 +109,7 @@ async function main() {
 
 	try {
 		// Call API
-		const result = await axios.post('/solana/getFee', {
+		const result = await axios.post('/solana/transfer', {
 			transaction: txStr,
 		});
 		console.log(result.data, '<-- success');

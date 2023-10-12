@@ -108,20 +108,24 @@ async function main() {
 
 			availableFeeTokens.map((token, index) => {
 				console.log(
-					`Index: ${index} - Name: ${availableFeeTokens[index].name} - Mint: ${availableFeeTokens[index].name}`,
+					`Index: ${index} - Name: ${token.name} - Mint: ${token.name}`,
 				);
 			});
 			const feeTokenIndex = readline.questionInt(
 				'Choose token to use as gas fee (index): ',
 			);
 
+			const feeToken = availableFeeTokens[feeTokenIndex];
+			console.log({ feeToken });
+
 			console.log('Get fee...');
 
-			const fee = getFee(
+			const fee = await getFee(
+				connection,
 				senderKeypair,
 				new PublicKey(receiverStr),
-				new PublicKey(availableFeeTokens[feeTokenIndex].mint),
-				new PublicKey(sendToken),
+				new PublicKey(feeToken.mint),
+				new PublicKey(sendToken.account.data.parsed.info.mint),
 				amount,
 			);
 

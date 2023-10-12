@@ -1,6 +1,6 @@
 import { clusterApiUrl, Connection, Keypair } from '@solana/web3.js';
 import base58 from 'bs58';
-import * as cacheManager from 'cache-manager';
+import { caching } from 'cache-manager';
 
 export const connection = new Connection(
 	process.env.ENVIRONMENT === 'production'
@@ -17,7 +17,7 @@ export const SOLANA_SECRET_KEYPAIR = Keypair.fromSecretKey(
 	base58.decode(process.env.SOLANA_SECRET_KEY as string),
 );
 
-export const cache = cacheManager.caching('memory', {
+export const cache = caching('memory', {
 	max: 1000,
 	ttl: 120 /*seconds*/,
 });
