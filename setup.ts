@@ -75,7 +75,13 @@ async function main() {
 			if (answer == 'y') {
 				console.log('-> Create account...');
 				try {
-					const transaction = new Transaction().add(
+					const bh = await connection.getLatestBlockhash('finalized');
+					const blockhash = bh.blockhash;
+					const lastValidBlockHeight = bh.lastValidBlockHeight;
+					const transaction = new Transaction({
+						blockhash,
+						lastValidBlockHeight,
+					}).add(
 						createAssociatedTokenAccountInstruction(
 							keypair.publicKey,
 							atAddress,
