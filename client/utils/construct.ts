@@ -27,7 +27,7 @@ export async function constructTransaction({
 	feePayer,
 	feeAmount,
 }: GasilonTransaction) {
-	const bh = await connection.getLatestBlockhash();
+	const bh = await connection.getLatestBlockhash('finalized');
 	const blockhash = bh.blockhash;
 	const lastValidBlockHeight = bh.lastValidBlockHeight;
 	const transaction = new Transaction({
