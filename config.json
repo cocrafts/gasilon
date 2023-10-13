@@ -20,6 +20,16 @@
                 "name": "SAMO",
                 "mint": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
                 "decimals": 9
+            },
+            {
+                "name": "Raydium",
+                "mint": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                "decimals": 6
+            },
+            {
+                "name": "Star Atlas",
+                "mint": "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
+                "decimals": 8
             }
         ]
     }
