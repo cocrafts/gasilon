@@ -28,14 +28,14 @@ app.use(cors());
 
 app.use(express.json());
 
-app.get('/api', handleGetConfig);
-app.post('/api', handleGetConfig);
+app.get('/', handleGetConfig);
+app.post('/', handleGetConfig);
 
-app.get('/api/solana/getFee', handleGetFee);
-app.post('/api/solana/getFee', handleGetFee);
+app.get('/solana/getFee', handleGetFee);
+app.post('/solana/getFee', handleGetFee);
 
-app.get('/api/solana/transfer', handleTransfer);
-app.post('/api/solana/transfer', handleTransfer);
+app.get('/solana/transfer', handleTransfer);
+app.post('/solana/transfer', handleTransfer);
 
 app.use('*', (req, res) => {
 	res.json({

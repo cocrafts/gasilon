@@ -33,10 +33,10 @@ export default {
 					allowOrigins: ['*'],
 				},
 				routes: {
-					'GET /api': gasilon,
-					'POST /api': gasilon,
-					'GET /api/{proxy+}': gasilon,
-					'POST /api/{proxy+}': gasilon,
+					'GET /': gasilon,
+					'POST /': gasilon,
+					'GET /{proxy+}': gasilon,
+					'POST /{proxy+}': gasilon,
 				},
 				customDomain: domain,
 			});
@@ -50,12 +50,12 @@ export default {
 } satisfies SSTConfig;
 
 const apiAlias = {
-	production: 'gasilon.',
-	staging: 'gasilon-stg.',
-	development: 'gasilon-dev.',
+	production: 'api.',
+	staging: 'api-stg.',
+	development: 'api-dev.',
 };
 
 export const domainFromStage = (stage: string) => {
-	const prefix = apiAlias[stage] || `gasilon-${stage}.`; 
-	return `${prefix}walless.io`;
+	const prefix = apiAlias[stage] || `api-${stage}.`;
+	return `${prefix}gasilon.com`;
 };
