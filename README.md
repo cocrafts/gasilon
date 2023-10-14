@@ -16,10 +16,10 @@ Here is about `Gasilon` flow:
 
 ```mermaid
 sequenceDiagram
-    Wallet/DApp->>Gasilon API: Request to get supported tokens
+    Wallet/DApp->>Gasilon API: Get supported tokens
     activate Wallet/DApp
     activate Gasilon API
-    Gasilon API-->>Wallet/DApp: tokens list
+    Gasilon API-->>Wallet/DApp: Tokens list
     deactivate Gasilon API
     Wallet/DApp->>Wallet/DApp: Construct template transaction with SPL token as gas fee
     Wallet/DApp->>Gasilon API: Get estimated fee for transaction
