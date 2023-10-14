@@ -82,6 +82,7 @@ cd server && yarn dev
 
 #### To deploy
 Deploy to production (AWS only for now, welcome PR for another platforms)
+
 Run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
 
 
