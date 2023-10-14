@@ -1,10 +1,10 @@
 # Gasilon
 
-A infrastructure layer that abstracts gas fees, allowing users to make any transaction on Solana without SOL 
+An infrastructure layer that abstracts gas fees, allowing users to make any transaction on Solana without SOL.
 
 ## What is Gasilon?
 
-Gasilon is a gasless solution currently supports on Solana. It helps user make a transaction without SOL, using SPL Token to pay fee instead.
+Gasilon is a gasless solution currently supported on Solana. It helps users make a transaction without SOL, using SPL Token to pay fee instead.
 
 Gasilon provides an API [`api.gasilon.com`](https://api.gasilon.com) for anyone (Wallet, DApp,...) to easily integrate gasless features, making any transaction without SOL seamlessly. The source code also includes `Client CLI` as a code snippet for testing, see how it works and for playground quickly.
 
@@ -12,8 +12,8 @@ Gasilon provides an API [`api.gasilon.com`](https://api.gasilon.com) for anyone 
 
 Gasilon uses a technique called `relayer`, we have some references from [`Solana-labs/Octane`](https://github.com/solana-labs/octane) project. With some improvements:
 - Use external price API call to market to get exchange fee
-- Make validation step more flexible with supporting both `create account` and `transfer token`
-- Calculate total fee including `rent fee` and `transaction fee` to make a swap instruction (fee paying)
+- Make validation step more flexible by supporting both `create account` and `transfer token`
+- Calculate total fee including `rent fee` and `transaction fee` to make a swap instruction (fee-paying)
 
 Here is `Gasilon` flow:
 
@@ -77,7 +77,7 @@ REDIS_USERNAME
 REDIS_PASSWORD
 REDIS_HOST
 ```
-1. make sure `.env` file configured as described above
+1. make sure `.env` file is configured as described above
 2. run `yarn setup` to check associated accounts (for fee tokens in the config list in `config.json`)
 
 ### Local run
@@ -86,7 +86,7 @@ cd server && yarn dev
 ```
 
 ### Deploy
-Deploy to production (AWS only for now, welcome PR for another platforms)
+Deploy to production (AWS only for now, welcome PR for other platforms)
 
 Run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
 
