@@ -39,8 +39,10 @@ export async function validateInstructions(
 	let selectedFeeToken: TokenFee;
 	let rentFee = 0;
 	let mightCreateAccount = false;
+	console.log('Number of instructions', transaction.instructions.length);
 
 	for (const instruction of transaction.instructions) {
+		console.log('Validate instruction');
 		for (const key of instruction.keys) {
 			if (
 				(key.isWritable || key.isSigner) &&
@@ -52,7 +54,7 @@ export async function validateInstructions(
 
 		if (mightCreateAccount) {
 			if (instruction.programId.equals(ASSOCIATED_TOKEN_PROGRAM_ID)) {
-				console.log('create account transaction');
+				console.log('Is create account instruction');
 				const [, , ownerMeta, mintMeta] = instruction.keys;
 				const associatedToken = await getAssociatedTokenAddress(
 					mintMeta.pubkey,
@@ -83,7 +85,7 @@ export async function validateInstructions(
 				isTransferInstruction(decodedInstruction) ||
 				isTransferCheckedInstruction(decodedInstruction)
 			) {
-				console.log('is transfer');
+				console.log('Is transfer instruction');
 				const {
 					keys: { source, destination },
 					data: { amount },

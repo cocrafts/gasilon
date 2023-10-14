@@ -49,7 +49,7 @@ export const handleGetFee = async (req: Request, res: Response) => {
 	} catch (error) {
 		let message = '';
 		if (error instanceof Error) {
-			message = error.message;
+			message = error.message || String(error);
 		}
 		res.status(400).json({ status: 'error', message });
 	}
