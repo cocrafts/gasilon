@@ -1,5 +1,7 @@
 # Gasilon
 
+A infrastructure layer that abstracts gas fees, allowing users to make any transaction on Solana without SOL 
+
 ## What is Gasilon?
 
 Gasilon is a gasless solution currently supports on Solana. It helps user make a transaction without SOL, using SPL Token to pay fee instead.
@@ -8,7 +10,10 @@ Gasilon provides an API [`api.gasilon.com`](https://api.gasilon.com) for anyone 
 
 ## How it works?
 
-Gasilon uses a technique called `relayer`, we have some references from [`Solana-labs/Octane`](https://github.com/solana-labs/octane) project.
+Gasilon uses a technique called `relayer`, we have some references from [`Solana-labs/Octane`](https://github.com/solana-labs/octane) project. With some improvements:
+- Use external price API call to market to get exchange fee
+- Make validation step more flexible with supporting both `create account` and `transfer token`
+- Calculate total fee including `rent fee` and `transaction fee` to make a swap instruction (fee paying)
 
 Here is about `Gasilon` flow:
 
