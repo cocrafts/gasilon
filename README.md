@@ -10,16 +10,27 @@ Gasilon provides an API [`api.gasilon.com`](https://api.gasilon.com) for anyone 
 
 ## How it works
 
-Gasilon uses a technique called `relayer`, we have some references from [`Solana-labs/Octane`](https://github.com/solana-labs/octane) project with improvments to make it more usable.
-
-Here is the components from `Octane`
-
-![Octane Architecture](https://github.com/solana-labs/octane/blob/master/overview.png)
-
-The diagram above shows basic communication between components to see how `relayer solution` works
+Gasilon uses a technique called `relayer`, we have some references from [`Solana-labs/Octane`](https://github.com/solana-labs/octane) project.
 
 Here is about `Gasilon` flow:
 
+```mermaid
+sequenceDiagram
+    Wallet/DApp->>Gasilon API: Request to get supported tokens
+    activate Gasilon API
+    Gasilon API-->>Wallet/DApp: tokens list
+    deactivate Gasilon API
+    Wallet/DApp->>Wallet/DApp: Construct template transaction with SPL token as gas fee
+    activate Gasilon API
+    Wallet/DApp->>Gasilon API: Get estimated fee for transaction
+    Gasilon API->>Gasilon API: Validate transaction
+    Gasilon API->>Price API: Get exchange rate from SOL to SPL Token
+    activate Price API
+    Price API-->>Gasilon API: Exchange rate
+    deactivate Price API
+    Gasilon API->>Wallet/DApp: Transaction Fee
+    Gasilon API->>On-chain: Start billing process
+```
 
 
 
