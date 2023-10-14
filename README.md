@@ -17,19 +17,31 @@ Here is about `Gasilon` flow:
 ```mermaid
 sequenceDiagram
     Wallet/DApp->>Gasilon API: Request to get supported tokens
+    activate Wallet/DApp
     activate Gasilon API
     Gasilon API-->>Wallet/DApp: tokens list
     deactivate Gasilon API
     Wallet/DApp->>Wallet/DApp: Construct template transaction with SPL token as gas fee
-    activate Gasilon API
     Wallet/DApp->>Gasilon API: Get estimated fee for transaction
+    activate Gasilon API
     Gasilon API->>Gasilon API: Validate transaction
     Gasilon API->>Price API: Get exchange rate from SOL to SPL Token
     activate Price API
     Price API-->>Gasilon API: Exchange rate
     deactivate Price API
-    Gasilon API->>Wallet/DApp: Transaction Fee
-    Gasilon API->>On-chain: Start billing process
+    Gasilon API-->>Wallet/DApp: Transaction Fee
+    deactivate Gasilon API
+    Wallet/DApp->>Wallet/DApp: Reconstruct and sign transaction
+    Wallet/DApp->>Gasilon API: Sent to transfer
+    activate Gasilon API
+    Gasilon API->>Gasilon API: Validate transaction with checking fee
+    Gasilon API->>On-chain RPC: Sign and send transaction
+    activate On-chain RPC
+    On-chain RPC-->>Gasilon API: Signature
+    deactivate On-chain RPC
+    Gasilon API-->>Wallet/DApp: Signature
+    deactivate Gasilon API
+    deactivate Wallet/DApp
 ```
 
 
