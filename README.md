@@ -15,7 +15,7 @@ Gasilon uses a technique called `relayer`, we have some references from [`Solana
 - Make validation step more flexible with supporting both `create account` and `transfer token`
 - Calculate total fee including `rent fee` and `transaction fee` to make a swap instruction (fee paying)
 
-Here is about `Gasilon` flow:
+Here is `Gasilon` flow:
 
 ```mermaid
 sequenceDiagram
@@ -80,12 +80,12 @@ REDIS_HOST
 1. make sure `.env` file configured as described above
 2. run `yarn setup` to check associated accounts (for fee tokens in the config list in `config.json`)
 
-#### Local run Gasilon
+### Local run
 ```
 cd server && yarn dev
 ```
 
-#### To deploy
+### Deploy
 Deploy to production (AWS only for now, welcome PR for another platforms)
 
 Run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
