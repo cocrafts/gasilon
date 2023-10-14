@@ -1,7 +1,5 @@
 # Gasilon
 
-1. [What is Gasilon?](#what-is-gasilon)
-
 ## What is Gasilon?
 
 Gasilon is a gasless solution currently supports on Solana. It helps user make a transaction without SOL, using SPL Token to pay fee instead.
@@ -50,7 +48,7 @@ First, install packages
 yarn install
 ```
 
-### To playground with CLIENT CLI
+### Playground with Client CLI
 Create `.env` file at `client/`
 ```
 PRIVATE_KEY=<client private key to make transaction>
@@ -59,23 +57,11 @@ GASILON_ENDPOINT=https://api.gasilon.com
 Run commands:
 ```
 cd client && yarn get-fee
-```
-or
-```
+# or
 cd client && yarn transfer
 ```
 
-### Local run Gasilon
-```
-cd server && yarn dev
-```
-
-### To deploy
-Deploy to production (AWS only for now, welcome PR for another platforms)
-1. make sure `.env` file configured as described above
-2. run `yarn setup` to check associated accounts (for fee tokens in the config list)
-3. run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
-
+### Config API
 Create `.env` file at project scope
 ```
 ENVIRONMENT=<production || development>
@@ -86,5 +72,18 @@ REDIS_USERNAME
 REDIS_PASSWORD
 REDIS_HOST
 ```
+1. make sure `.env` file configured as described above
+2. run `yarn setup` to check associated accounts (for fee tokens in the config list in `config.json`)
+
+#### Local run Gasilon
+```
+cd server && yarn dev
+```
+
+#### To deploy
+Deploy to production (AWS only for now, welcome PR for another platforms)
+Run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
+
+
 
 
