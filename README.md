@@ -4,11 +4,11 @@
 
 ## What is Gasilon?
 
-Gasilon is a gasless solution currently supports on Solana. It helps user make a transaction without SOL, using SPL to pay fee instead.
+Gasilon is a gasless solution currently supports on Solana. It helps user make a transaction without SOL, using SPL Token to pay fee instead.
 
 Gasilon provides an API [`api.gasilon.com`](https://api.gasilon.com) for anyone (Wallet, DApp,...) to easily integrate gasless features, making any transaction without SOL seamlessly. The source code also includes `Client CLI` as a code snippet for testing, see how it works and for playground quickly.
 
-## How it works
+## How it works?
 
 Gasilon uses a technique called `relayer`, we have some references from [`Solana-labs/Octane`](https://github.com/solana-labs/octane) project.
 
@@ -44,12 +44,39 @@ sequenceDiagram
     deactivate Wallet/DApp
 ```
 
+## Setup
+First, install packages
+```
+yarn install
+```
 
+### To playground with CLIENT CLI
+Create `.env` file at `client/`
+```
+PRIVATE_KEY=<client private key to make transaction>
+GASILON_ENDPOINT=https://api.gasilon.com
+```
+Run commands:
+```
+cd client && yarn get-fee
+```
+or
+```
+cd client && yarn transfer
+```
 
-## Prepare environment
+### Local run Gasilon
+```
+cd server && yarn dev
+```
+
+### To deploy
+Deploy to production (AWS only for now, welcome PR for another platforms)
+1. make sure `.env` file configured as described above
+2. run `yarn setup` to check associated accounts (for fee tokens in the config list)
+3. run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
 
 Create `.env` file at project scope
-
 ```
 ENVIRONMENT=<production || development>
 SOLANA_SECRET_KEY=<private key>
@@ -60,8 +87,4 @@ REDIS_PASSWORD
 REDIS_HOST
 ```
 
-## Deploy to production (AWS only for now, welcome PR for another platforms)
-1. make sure `.env` file configured as described above
-2. run `yarn setup` to check associated accounts (for fee tokens in the config list)
-3. run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
 
