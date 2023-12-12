@@ -30,6 +30,11 @@
                 "name": "Star Atlas",
                 "mint": "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
                 "decimals": 8
+            },
+            {
+                "name": "Bonk",
+                "mint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+                "decimals": 5
             }
         ]
     }
