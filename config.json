@@ -35,6 +35,11 @@
                 "name": "Bonk",
                 "mint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
                 "decimals": 5
+            },
+            {
+                "name": "Moutai",
+                "mint": "45EgCwcPXYagBC7KqBin4nCFgEZWN7f3Y6nACwxqMCWX",
+                "decimals": 6
             }
         ]
     }
