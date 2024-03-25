@@ -49,9 +49,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 			Buffer.from(base58.decode(signature)),
 		);
 
-		await sendAndConfirmRawTransaction(connection, transaction.serialize(), {
-			commitment: 'confirmed',
-		});
+		await sendAndConfirmRawTransaction(connection, transaction.serialize());
 
 		res.status(200).json({ status: 'ok', signature });
 	} catch (error) {
