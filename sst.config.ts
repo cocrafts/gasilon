@@ -18,6 +18,7 @@ export default {
 			const domain = domainFromStage(app.stage);
 			const gasilon = new Function(stack, 'gasilon', {
 				handler: 'lambda/index.handler',
+				timeout: '120 seconds',
 				copyFiles: [{ from: './config.json' }],
 				environment: {
 					ENVIRONMENT: process.env.ENVIRONMENT,
