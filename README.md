@@ -10,10 +10,11 @@ Gasilon provides an API [`api.gasilon.com`](https://api.gasilon.com) for anyone 
 
 ## How it works?
 
-Gasilon uses a technique called `relayer`, we have some references from [`Solana-labs/Octane`](https://github.com/solana-labs/octane) project. With some improvements:
-- Use external price API call to market to get exchange fee
-- Make validation step more flexible by supporting both `create account` and `transfer token`
-- Calculate total fee including `rent fee` and `transaction fee` to make a swap instruction (fee-paying)
+Gasilon works as a transaction relayer, validates, signs and sends transaction
+
+- Transaction will be required to include fee paying instruction, the exchange fee queried from external price API
+- Supported instructions: `Create Associated Token Account`, `Transfer Token`, `Set Compute Unit`
+- Endpoints: `getFee` to get the transaction fee with exchange rate, `transfer` to send transaction
 
 Here is `Gasilon` flow:
 
@@ -48,18 +49,24 @@ sequenceDiagram
 ```
 
 ## Setup
+
 First, install packages
+
 ```
 yarn install
 ```
 
 ### Playground with Client CLI
+
 Create `.env` file at `client/`
+
 ```
 PRIVATE_KEY=<client private key to make transaction>
 GASILON_ENDPOINT=https://api.gasilon.com
 ```
+
 Run commands:
+
 ```
 cd client && yarn get-fee
 # or
@@ -67,7 +74,9 @@ cd client && yarn transfer
 ```
 
 ### Config API
+
 Create `.env` file at project scope
+
 ```
 ENVIRONMENT=<production || development>
 SOLANA_SECRET_KEY=<private key>
@@ -77,19 +86,18 @@ REDIS_USERNAME
 REDIS_PASSWORD
 REDIS_HOST
 ```
+
 1. make sure `.env` file is configured as described above
 2. run `yarn setup` to check associated accounts (for fee tokens in the config list in `config.json`)
 
 ### Local run
+
 ```
 cd server && yarn dev
 ```
 
 ### Deploy
+
 Deploy to production (AWS only for now, welcome PR for other platforms)
 
 Run `yarn deploy` to deploy this to your AWS account (see `sst.config.ts` for further details)
-
-
-
-
