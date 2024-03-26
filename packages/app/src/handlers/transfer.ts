@@ -16,7 +16,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 	if (typeof serialized !== 'string') {
 		res
 			.status(400)
-			.json({ status: 'error', message: 'request should contain transaction' });
+			.json({ status: 'error', message: 'request must contain transaction' });
 		return;
 	}
 
