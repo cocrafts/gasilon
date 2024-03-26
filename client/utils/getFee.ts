@@ -1,15 +1,28 @@
-import { VersionedMessage, VersionedTransaction } from '@solana/web3.js';
+import {
+	ComputeBudgetProgram,
+	VersionedMessage,
+	VersionedTransaction,
+} from '@solana/web3.js';
 import axios from 'axios';
 import base58 from 'bs58';
 
 import type { GasilonTransaction } from './construct';
 import { constructTransaction } from './construct';
 
-export async function getFee(props: Omit<GasilonTransaction, 'feeAmount'>) {
+export async function getFee(
+	tx: Omit<GasilonTransaction, 'feeAmount'>,
+	useSetComputeUnit?: boolean,
+) {
 	const transaction = await constructTransaction({
-		...props,
+		...tx,
 		feeAmount: 1,
 	});
+
+	if (useSetComputeUnit) {
+		transaction.instructions.unshift(
+			ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 20000 }),
+		);
+	}
 
 	const txV0 = new VersionedTransaction(
 		VersionedMessage.deserialize(transaction.serializeMessage()),

@@ -2,6 +2,7 @@ import { setExchangeFunction } from '@gasilon/solana';
 import cors from 'cors';
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
+import morgan from 'morgan';
 
 import { handleGetConfig, handleGetFee, handleTransfer } from './handlers';
 import { getExchangeRate } from './utils';
@@ -25,7 +26,7 @@ setExchangeFunction(async (from, to) => {
 export const app = express();
 
 app.use(cors());
-
+app.use(morgan('tiny'));
 app.use(express.json());
 
 app.get('/', handleGetConfig);
