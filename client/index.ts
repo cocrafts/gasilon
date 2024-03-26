@@ -137,9 +137,6 @@ async function main() {
 
 		const useSetComputeUnit =
 			readline.question('Use SetComputeUnit? (y/N): ') === 'y';
-		if (useSetComputeUnit) {
-			// gasilonTransaction.
-		}
 
 		const fee = await getFee(gasilonTransaction, useSetComputeUnit);
 		if (!fee) return;
