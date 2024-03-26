@@ -9,9 +9,6 @@
     },
     "author": "Tan Le",
     "license": "MIT",
-    "peerDependencies": {
-        "typescript": "^5.0.0"
-    },
     "dependencies": {
         "@solana/spl-token": "^0.3.8",
         "@solana/web3.js": "^1.78.5",
@@ -20,6 +17,8 @@
         "dotenv": "^16.3.1"
     },
     "devDependencies": {
-        "ts-node": "^10.9.2"
+        "@types/node": "^20.11.30",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.0.0"
     }
 }

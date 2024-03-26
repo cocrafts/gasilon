@@ -27,8 +27,7 @@
         "aws-cdk-lib": "2.95.1",
         "constructs": "10.2.69",
         "readline-sync": "^1.4.10",
-        "sst": "2.26.8",
-        "typescript": "^5.2.2"
+        "sst": "2.26.8"
     },
     "devDependencies": {
         "@next/eslint-plugin-next": "^13.5.2",
@@ -43,7 +42,8 @@
         "eslint-plugin-react": "^7.32.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-simple-import-sort": "^10.0.0",
-        "prettier": "^3.0.3"
+        "prettier": "^3.0.3",
+        "typescript": "^5.0.0"
     },
     "packageManager": "yarn@3.6.3"
 }

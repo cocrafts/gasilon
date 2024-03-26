@@ -49,7 +49,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 			Buffer.from(base58.decode(signature)),
 		);
 
-		await connection.sendTransaction(transaction, []);
+		await connection.sendRawTransaction(transaction.serialize());
 
 		res.status(200).json({ status: 'ok', signature });
 	} catch (error) {
