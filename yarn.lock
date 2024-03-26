@@ -1935,11 +1935,11 @@ __metadata:
   dependencies:
     "@solana/spl-token": ^0.3.8
     "@solana/web3.js": ^1.78.5
+    "@types/node": ^20.11.30
     axios: ^1.5.0
     bs58: ^5.0.0
     dotenv: ^16.3.1
     ts-node: ^10.9.2
-  peerDependencies:
     typescript: ^5.0.0
   languageName: unknown
   linkType: soft
@@ -1952,6 +1952,7 @@ __metadata:
     "@types/aws-lambda": ^8.10.122
     "@vendia/serverless-express": ^4.10.4
     aws-lambda: ^1.0.7
+    typescript: ^5.0.0
   languageName: unknown
   linkType: soft
 
@@ -1960,6 +1961,7 @@ __metadata:
   resolution: "@gasilon/server@workspace:server"
   dependencies:
     "@gasilon/app": "*"
+    "@types/node": ^20.11.30
     dotenv: ^16.3.1
     ts-node: ^10.9.2
   peerDependencies:
@@ -1981,7 +1983,7 @@ __metadata:
     "@types/cache-manager": ^3.6.0
     "@types/chai-as-promised": ^7.1.4
     "@types/mocha": ^9.0.0
-    "@types/node": ^16.11.13
+    "@types/node": ^20.11.30
     axios: ^1.5.1
     cache-manager: ^5.2.4
     chai: ^4.3.4
@@ -3489,10 +3491,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.11.13":
-  version: 16.18.58
-  resolution: "@types/node@npm:16.18.58"
-  checksum: 6d8404abc6c97bacd220f606441727adea923f3bd010d07d869f0dc6c4c6dc016430880af1f270edf1b84ae637a7fa5339e6adb3abba210a4820ac5e28f34067
+"@types/node@npm:^20.11.30":
+  version: 20.11.30
+  resolution: "@types/node@npm:20.11.30"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 7597767aa3e44b0f1bf62efa522dd17741135f283c11de6a20ead8bb7016fb4999cc30adcd8f2bb29ebb216906c92894346ccd187de170927dc1e212d2c07c81
   languageName: node
   linkType: hard
 
@@ -6640,7 +6644,7 @@ __metadata:
     prettier: ^3.0.3
     readline-sync: ^1.4.10
     sst: 2.26.8
-    typescript: ^5.2.2
+    typescript: ^5.0.0
   languageName: unknown
   linkType: soft
 
@@ -10661,23 +10665,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.2.2":
-  version: 5.2.2
-  resolution: "typescript@npm:5.2.2"
+"typescript@npm:^5.0.0":
+  version: 5.4.3
+  resolution: "typescript@npm:5.4.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 7912821dac4d962d315c36800fe387cdc0a6298dba7ec171b350b4a6e988b51d7b8f051317786db1094bd7431d526b648aba7da8236607febb26cf5b871d2d3c
+  checksum: d74d731527e35e64d8d2dcf2f897cf8cfbc3428be0ad7c48434218ba4ae41239f53be7c90714089db1068c05cae22436af2ecba71fd36ecc5e7a9118af060198
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
-  version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+"typescript@patch:typescript@^5.0.0#~builtin<compat/typescript>":
+  version: 5.4.3
+  resolution: "typescript@patch:typescript@npm%3A5.4.3#~builtin<compat/typescript>::version=5.4.3&hash=f3b441"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 0f4da2f15e6f1245e49db15801dbee52f2bbfb267e1c39225afdab5afee1a72839cd86000e65ee9d7e4dfaff12239d28beaf5ee431357fcced15fb08583d72ca
+  checksum: 3a62fe90aa79d68c9ce38ea5edb2957e62801c733b99f0e5a2b8b50922761f68f7d9a40d28c544b449866e81185cddb93cba2496d0ff3fa52ef5b1f8bcace38c
   languageName: node
   linkType: hard
 
@@ -10704,6 +10708,13 @@ __metadata:
   version: 5.25.3
   resolution: "undici-types@npm:5.25.3"
   checksum: ec9d2cc36520cbd9fbe3b3b6c682a87fe5be214699e1f57d1e3d9a2cb5be422e62735f06e0067dc325fd3dd7404c697e4d479f9147dc8a804e049e29f357f2ff
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 

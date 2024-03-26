@@ -14,5 +14,8 @@
         "@types/aws-lambda": "^8.10.122",
         "@vendia/serverless-express": "^4.10.4",
         "aws-lambda": "^1.0.7"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
     }
 }
