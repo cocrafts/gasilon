@@ -134,7 +134,14 @@ async function main() {
 		};
 
 		console.log('\n----------------------\nAction:', action);
-		const fee = await getFee(gasilonTransaction);
+
+		const useSetComputeUnit =
+			readline.question('Use SetComputeUnit? (y/N): ') === 'y';
+		if (useSetComputeUnit) {
+			// gasilonTransaction.
+		}
+
+		const fee = await getFee(gasilonTransaction, useSetComputeUnit);
 		if (!fee) return;
 
 		if (action == 'transfer') {

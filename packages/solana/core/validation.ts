@@ -9,7 +9,7 @@ import {
 	isTransferInstruction,
 } from '@solana/spl-token';
 import type { Connection, Transaction } from '@solana/web3.js';
-import { type Keypair } from '@solana/web3.js';
+import { ComputeBudgetProgram, type Keypair } from '@solana/web3.js';
 
 import { areInstructionsEqual } from './instructions';
 import type { TokenFee } from './tokenFee';
@@ -18,17 +18,15 @@ export async function validateTransaction(
 	transaction: Transaction,
 	feePayer: Keypair,
 ) {
-	if (!transaction.feePayer?.equals(feePayer.publicKey))
+	if (!transaction.feePayer?.equals(feePayer.publicKey)) {
 		throw new Error('invalid fee payer');
-	if (!transaction.recentBlockhash) throw new Error('missing recent blockhash');
-
-	// Check the signatures for length, the primary signature, and secondary signature(s)
-	if (transaction.signatures.length === 0) {
+	} else if (!transaction.recentBlockhash) {
+		throw new Error('missing recent blockhash');
+	} else if (transaction.signatures.length === 0) {
 		throw new Error('no signatures');
 	}
 }
 
-// Check that a transaction contains a valid transfer to Octane's token account
 export async function validateInstructions(
 	connection: Connection,
 	transaction: Transaction,
@@ -39,10 +37,14 @@ export async function validateInstructions(
 	let selectedFeeToken: TokenFee;
 	let rentFee = 0;
 	let mightCreateAccount = false;
-	console.log('Number of instructions', transaction.instructions.length);
 
 	for (const instruction of transaction.instructions) {
-		console.log('Validate instruction');
+		console.log('Instruction with ProgramId', instruction.programId.toBase58());
+		if (instruction.programId.equals(ComputeBudgetProgram.programId)) {
+			console.log('Validate compute budget instruction');
+			continue;
+		}
+
 		for (const key of instruction.keys) {
 			if (
 				(key.isWritable || key.isSigner) &&
@@ -54,7 +56,7 @@ export async function validateInstructions(
 
 		if (mightCreateAccount) {
 			if (instruction.programId.equals(ASSOCIATED_TOKEN_PROGRAM_ID)) {
-				console.log('Is create account instruction');
+				console.log('Validate create account instruction');
 				const [, , ownerMeta, mintMeta] = instruction.keys;
 				const associatedToken = await getAssociatedTokenAddress(
 					mintMeta.pubkey,
@@ -85,7 +87,7 @@ export async function validateInstructions(
 				isTransferInstruction(decodedInstruction) ||
 				isTransferCheckedInstruction(decodedInstruction)
 			) {
-				console.log('Is transfer instruction');
+				console.log('Validate transfer instruction');
 				const {
 					keys: { source, destination },
 					data: { amount },
