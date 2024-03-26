@@ -1,5 +1,5 @@
 import { signGasilonTransaction } from '@gasilon/solana';
-import { sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js';
+import { Transaction } from '@solana/web3.js';
 import base58 from 'bs58';
 import type { Request, Response } from 'express';
 
@@ -49,7 +49,7 @@ export const handleTransfer = async (req: Request, res: Response) => {
 			Buffer.from(base58.decode(signature)),
 		);
 
-		await sendAndConfirmRawTransaction(connection, transaction.serialize());
+		await connection.sendTransaction(transaction, []);
 
 		res.status(200).json({ status: 'ok', signature });
 	} catch (error) {
