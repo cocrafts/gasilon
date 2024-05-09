@@ -45,7 +45,15 @@ async function main() {
 			return;
 		}
 
-		const senderKeypair = Keypair.fromSecretKey(base58.decode(privateKeyStr));
+		let secretBuffer: Buffer | Uint8Array;
+
+		if (privateKeyStr.startsWith('[')) {
+			secretBuffer = Buffer.from(JSON.parse(privateKeyStr));
+		} else {
+			secretBuffer = base58.decode(privateKeyStr);
+		}
+
+		const senderKeypair = Keypair.fromSecretKey(secretBuffer);
 
 		console.log('\n----------------------\nInit Transaction:');
 

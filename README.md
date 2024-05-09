@@ -61,7 +61,7 @@ yarn install
 Create `.env` file at `client/`
 
 ```
-PRIVATE_KEY=<client private key to make transaction>
+PRIVATE_KEY=<client private key to make transaction, accept both base58 string or bytes array string>
 GASILON_ENDPOINT=https://api.gasilon.com
 ```
 
